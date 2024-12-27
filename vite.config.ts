@@ -1,25 +1,41 @@
-import { fileURLToPath, URL } from 'node:url'
+import { resolve } from 'node:path'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import vueDevTools from 'vite-plugin-vue-devtools'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+// import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    vueJsx(),
-    vueDevTools(),
-  ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    },
-  },
-  server: {
-    port: 5000,
-    host: true,
-    
-  },
+	plugins: [
+		vue(),
+		vueJsx(),
+		// vueDevTools(),
+		AutoImport({
+			imports: ['vue', 'vue-router', 'pinia'],
+			dts: 'src/types/auto-imports.d.ts',
+			dirs: ['src/stores'],
+			vueTemplate: true,
+		}),
+		// 自动导入组件
+		Components({
+			// 指定组件位置
+			dirs: ['src/components'],
+			// 组件的有效文件扩展名
+			extensions: ['vue'],
+			// 配置文件生成位置
+			dts: 'src/types/components.d.ts',
+		}),
+	],
+	resolve: {
+		alias: {
+			'@': resolve(__dirname, 'src'),
+		},
+	},
+	server: {
+		port: 5000,
+		host: true,
+	},
 })
