@@ -1,0 +1,12 @@
+// See https://containers.dev/implementors/json_reference/ for configuration reference
+{
+	"name": "vue3-gin-admin",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+   "remoteUser": "root",
+   // 暴露端口
+   "ports": [
+        5000
+   ]
+}
