@@ -1,8 +1,9 @@
 import axios from 'axios'
 import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
+import { ApiHandler } from './handler'
 
 const httpClient: AxiosInstance = axios.create({
-	baseURL: 'http://localhost:3333',
+	baseURL: 'http://localhost:3333/api',
 	timeout: 30 * 1000,
 	headers: {
 		'Content-Type': 'application/json',
@@ -48,8 +49,8 @@ httpClient.interceptors.response.use(
 			requestControllers.delete(url)
 		}
 
-		// 直接返回响应数据
-		return response.data
+		// 处理响应数据
+		return ApiHandler.handleResponse(response)
 	},
 	(error) => {
 		const url = error.config?.url || ''
@@ -59,17 +60,8 @@ httpClient.interceptors.response.use(
 			requestControllers.delete(url)
 		}
 
-		// 更详细的错误处理
-		const errorMessage = error.response?.data?.message || error.message || '请求错误'
-		console.error(errorMessage)
-
-		// 可以根据状态码处理不同情况
-		if (error.response?.status === 401) {
-			// 处理未授权情况，例如跳转到登录页
-			// window.location.href = '/login'
-		}
-
-		return Promise.reject(error)
+		// 处理错误
+		return ApiHandler.handleError(error)
 	},
 )
 

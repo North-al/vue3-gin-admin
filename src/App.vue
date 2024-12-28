@@ -1,4 +1,28 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { fetchUserLogin } from '@/api/services'
+
+fetchUserLogin({ account: 'zhangsan', password: '123456' })
+	.then((res) => {
+		console.log(res.token)
+	})
+	.catch((err) => {
+		console.log(err)
+	})
+fetchUserLogin({ account: 'zhangsan', password: '123456' })
+	.then((res) => {
+		console.log(res.token)
+	})
+	.catch((err) => {
+		console.log(err)
+	})
+fetchUserLogin({ account: 'zhangsan', password: '123456' })
+	.then((res) => {
+		console.log(res.token)
+	})
+	.catch((err) => {
+		console.log(err)
+	})
+</script>
 
 <template>
 	<header>
