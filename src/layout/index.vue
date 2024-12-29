@@ -9,7 +9,9 @@ import AppMain from './components/AppMain.vue'
 		<AppSidebar class="sidebar-container" />
 		<div class="main-container">
 			<AppHeader />
-			<AppMain />
+			<div class="main-content">
+				<AppMain />
+			</div>
 		</div>
 	</div>
 </template>
@@ -21,10 +23,10 @@ import AppMain from './components/AppMain.vue'
 	height: 100vh;
 
 	.sidebar-container {
-		width: 210px;
+		width: 220px;
 		height: 100%;
 		background: #fff;
-		box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+		border-right: 1px solid #f2f2f2;
 	}
 
 	.main-container {
@@ -32,6 +34,13 @@ import AppMain from './components/AppMain.vue'
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
+	}
+
+	.main-content {
+		flex: 1;
+		padding: 10px;
+		overflow: auto;
+		background: #eceef1;
 	}
 }
 </style>

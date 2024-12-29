@@ -30,9 +30,11 @@ const logoUrl = computed(() => {
 	width: 100%;
 	height: 50px;
 	line-height: 50px;
-	background: #fff;
 	text-align: center;
 	overflow: hidden;
+	border-right: 1px solid #f2f2f2;
+	background: #fff;
+	box-shadow: 0px 2px 2px 0px rgba(90, 90, 90, 0.05);
 
 	.sidebar-logo-link {
 		height: 100%;

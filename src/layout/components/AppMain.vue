@@ -6,9 +6,9 @@
 
 <style scoped lang="scss">
 .app-main {
-	flex: 1;
-	padding: 20px;
-	overflow: auto;
-	background: #f0f2f5;
+	border-radius: 8px;
+	background: #fff;
+	box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.15);
+	height: 100%;
 }
 </style>

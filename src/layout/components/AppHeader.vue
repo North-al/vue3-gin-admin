@@ -19,6 +19,6 @@
 	justify-content: space-between;
 	padding: 0 20px;
 	background: #fff;
-	box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+	box-shadow: 0px 2px 2px 0px rgba(90, 90, 90, 0.05);
 }
 </style>
