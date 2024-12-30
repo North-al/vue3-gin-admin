@@ -1,18 +1,22 @@
-FROM node:20
+FROM node:20-slim AS base
 
-# Install basic development tools
-# RUN apt update && apt install -y less man-db sudo
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
-RUN npm install -g pnpm
-# RUN pnpm i -g @antfu/ni
-# RUN pnpm install
+COPY . /app
+WORKDIR /app
 
+RUN pnpm install -g @antfu/ni
 
-# Ensure default `node` user has access to `sudo`
-# ARG USERNAME=node
-# RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-#     && chmod 0440 /etc/sudoers.d/$USERNAME
+# 安装生产依赖并缓存
+# FROM base AS prod-deps
+# RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-# Set `DEVCONTAINER` environment variable to help with orientation
+# 构建阶段
+# FROM base AS build
+# COPY . .
+# RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
 ENV DEVCONTAINER=true
 EXPOSE 5000
