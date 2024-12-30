@@ -7,6 +7,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import UnoCSS from 'unocss/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 // import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
@@ -21,7 +23,7 @@ export default defineConfig({
 			dts: 'src/types/auto-imports.d.ts',
 			dirs: ['src/stores'],
 			vueTemplate: true,
-			resolvers: [ElementPlusResolver()],
+			resolvers: [ElementPlusResolver(), IconsResolver()],
 		}),
 		// 自动导入组件
 		Components({
@@ -32,6 +34,11 @@ export default defineConfig({
 			// 配置文件生成位置
 			dts: 'src/types/components.d.ts',
 			resolvers: [ElementPlusResolver()],
+		}),
+		Icons({
+			compiler: 'vue3',
+			defaultClass: 'inline',
+			defaultStyle: 'vertical-align: sub;',
 		}),
 	],
 	resolve: {
