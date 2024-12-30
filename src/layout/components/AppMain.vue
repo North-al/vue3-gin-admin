@@ -1,14 +1,17 @@
 <template>
 	<div class="app-main">
-		<router-view />
+		<el-scrollbar>
+			<router-view />
+		</el-scrollbar>
 	</div>
 </template>
 
 <style scoped lang="scss">
 .app-main {
-	border-radius: 8px;
+	border-radius: 4px;
 	background: #fff;
 	box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.15);
 	height: 100%;
+	padding: 12px 2px 0 12px;
 }
 </style>

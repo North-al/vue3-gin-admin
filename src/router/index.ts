@@ -6,8 +6,15 @@ const router = createRouter({
 	routes: [
 		{
 			path: '/',
-			name: 'home',
 			component: Layout,
+			redirect: '/home',
+			children: [
+				{
+					path: '/home',
+					name: 'home',
+					component: () => import('../pages/HomeView.vue'),
+				},
+			],
 		},
 		{
 			path: '/about',

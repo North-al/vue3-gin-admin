@@ -2,6 +2,7 @@
 import AppHeader from './components/AppHeader.vue'
 import AppSidebar from './components/AppSidebar.vue'
 import AppMain from './components/AppMain.vue'
+import AppFooter from './components/AppFooter.vue'
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import AppMain from './components/AppMain.vue'
 			<div class="main-content">
 				<AppMain />
 			</div>
+            <AppFooter />
 		</div>
 	</div>
 </template>
@@ -38,7 +40,7 @@ import AppMain from './components/AppMain.vue'
 
 	.main-content {
 		flex: 1;
-		padding: 10px;
+		padding: 8px;
 		overflow: auto;
 		background: #eceef1;
 	}
