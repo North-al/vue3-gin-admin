@@ -45,7 +45,7 @@
 		<div class="text-center mt-8">
 			<router-link
 				to="/signin"
-				class="text-lg text-blue-600 hover:text-indigo-600 transition-colors duration-300"
+				class="text-sm text-blue-600 hover:text-indigo-600 transition-colors duration-300"
 			>
 				已有账号？立即登录
 			</router-link>
@@ -54,33 +54,9 @@
 </template>
 
 <script setup lang="ts">
-import type { FormInstance, FormRules } from 'element-plus'
+import { useAuthForm } from '@/hooks/useAuthForm'
 
-const formRef = ref<FormInstance>()
-const form = reactive({
-	username: '',
-	password: '',
-	confirmPassword: '',
-})
-
-const validatePass = (rule: any, value: string, callback: any) => {
-	if (value === '') {
-		callback(new Error('请再次输入密码'))
-	} else if (value !== form.password) {
-		callback(new Error('两次输入密码不一致!'))
-	} else {
-		callback()
-	}
-}
-
-const rules: FormRules = {
-	username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-	password: [
-		{ required: true, message: '请输入密码', trigger: 'blur' },
-		{ min: 6, message: '密码长度不能小于6位', trigger: 'blur' },
-	],
-	confirmPassword: [{ required: true, validator: validatePass, trigger: 'blur' }],
-}
+const { formRef, form, rules } = useAuthForm(true)
 
 const handleSubmit = async () => {
 	if (!formRef.value) return

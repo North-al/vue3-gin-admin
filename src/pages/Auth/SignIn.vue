@@ -34,7 +34,7 @@
 		<div class="text-center mt-8">
 			<router-link
 				to="/signup"
-				class="text-lg text-blue-600 hover:text-indigo-600 transition-colors duration-300"
+				class="text-sm text-blue-600 hover:text-indigo-600 transition-colors duration-300"
 			>
 				还没有账号？立即注册
 			</router-link>
@@ -43,21 +43,9 @@
 </template>
 
 <script setup lang="ts">
-import type { FormInstance, FormRules } from 'element-plus'
+import { useAuthForm } from '@/hooks/useAuthForm'
 
-const formRef = ref<FormInstance>()
-const form = reactive({
-	username: '',
-	password: '',
-})
-
-const rules: FormRules = {
-	username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-	password: [
-		{ required: true, message: '请输入密码', trigger: 'blur' },
-		{ min: 6, message: '密码长度不能小于6位', trigger: 'blur' },
-	],
-}
+const { formRef, form, rules } = useAuthForm(false)
 
 const handleSubmit = async () => {
 	if (!formRef.value) return
