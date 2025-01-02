@@ -30,8 +30,9 @@ export default defineConfig({
 			// 指定组件位置
 			dirs: ['src/components'],
 			// 组件的有效文件扩展名
-			extensions: ['vue'],
+			extensions: ['vue', 'tsx'],
 			// 配置文件生成位置
+			include: [/\.vue$/, /\.tsx$/],
 			dts: 'src/types/components.d.ts',
 			resolvers: [ElementPlusResolver()],
 		}),
