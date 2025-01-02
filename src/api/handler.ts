@@ -14,12 +14,12 @@ export class ApiHandler {
 	public static async handleError(error: any) {
 		// 更详细的错误处理
 		const errorMessage = error.response?.data?.message || error.message || '请求错误'
-		console.error(errorMessage)
+		ElMessage.error(errorMessage)
 
 		// 可以根据状态码处理不同情况
 		if (error.response?.status === 401) {
 			// 处理未授权情况，例如跳转到登录页
-			// window.location.href = '/login'
+			window.location.href = '/signIn'
 		}
 
 		return Promise.reject(error)

@@ -1,125 +1,106 @@
 <template>
 	<div class="menu-container">
-		<!-- 头部区域 -->
-		<div class="header-section">
-			<div class="title-wrapper">
-				<el-icon class="mr-2"><Menu /></el-icon>
-				<h2 class="page-title">菜单管理</h2>
-			</div>
-			<el-button type="primary" class="add-button" @click="handleAdd">
-				<el-icon class="mr-1"><Plus /></el-icon>新增菜单
-			</el-button>
-		</div>
-
 		<!-- 表格主体 -->
-		<el-table
-			ref="tableRef"
-			v-loading="loading"
-			:data="treeMenuList"
-			row-key="id"
-			border
-			stripe
-			:tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-			size="small"
-			:header-cell-style="tableHeaderStyle"
-		>
-			<el-table-column type="selection" width="55" align="center" />
-			<el-table-column prop="id" label="ID" width="80" align="center" />
-			<el-table-column prop="title" label="菜单名称" min-width="120">
-				<template #default="{ row }">
-					<div class="menu-title-cell">
-						<el-icon v-if="row.icon" class="menu-icon"
-							><component :is="row.icon"
-						/></el-icon>
-						<span>{{ row.title }}</span>
-						<el-tag
-							v-if="row.children?.length"
-							size="small"
-							type="info"
-							effect="plain"
-							class="ml-2"
-							>{{ row.children.length }}个子项</el-tag
-						>
-					</div>
-				</template>
-			</el-table-column>
-			<el-table-column prop="icon" label="菜单图标" min-width="60">
-				<template #default="{ row }">
-					<template v-if="row.icon">
-						<el-icon><component :is="row.icon" /></el-icon>
+		<div px-20px>
+			<el-table v-loading="loading" :data="treeMenuList" style="width: 100%; height: 100%">
+				<el-table-column type="selection" width="55" align="center" />
+				<el-table-column prop="id" label="ID" width="80" align="center" />
+				<el-table-column prop="title" label="菜单名称" min-width="120">
+					<template #default="{ row }">
+						<div class="menu-title-cell">
+							<el-icon v-if="row.icon" class="menu-icon"
+								><component :is="row.icon"
+							/></el-icon>
+							<span>{{ row.title }}</span>
+							<el-tag
+								v-if="row.children?.length"
+								size="small"
+								type="info"
+								effect="plain"
+								class="ml-2"
+								>{{ row.children.length }}个子项</el-tag
+							>
+						</div>
 					</template>
-					<template v-else>
-						<span>-</span>
+				</el-table-column>
+				<el-table-column prop="icon" label="菜单图标" min-width="60">
+					<template #default="{ row }">
+						<template v-if="row.icon">
+							<el-icon><component :is="row.icon" /></el-icon>
+						</template>
+						<template v-else>
+							<span>-</span>
+						</template>
 					</template>
-				</template>
-			</el-table-column>
-			<el-table-column
-				prop="route_path"
-				label="路由路径"
-				min-width="120"
-				show-overflow-tooltip
-			>
-				<template #default="{ row }">
-					<el-tag size="small" effect="plain">{{ row.route_path }}</el-tag>
-				</template>
-			</el-table-column>
-			<el-table-column
-				prop="page_file_path"
-				label="页面文件路径"
-				min-width="120"
-				show-overflow-tooltip
-			>
-				<template #default="{ row }">
-					<el-tooltip :content="row.page_file_path" placement="top">
-						<span class="file-path">{{ row.page_file_path }}</span>
-					</el-tooltip>
-				</template>
-			</el-table-column>
-			<el-table-column prop="sort" label="排序" min-width="120" align="center">
-				<template #default="{ row }">
-					<el-input-number v-model="row.sort" :min="0" size="small" />
-				</template>
-			</el-table-column>
-			<el-table-column prop="hidden" label="显示状态" min-width="120" align="center">
-				<template #default="{ row }">
-					<el-switch
-						v-model="row.hidden"
-						:active-value="false"
-						:inactive-value="true"
-						active-text="显示"
-						inactive-text="隐藏"
-					/>
-				</template>
-			</el-table-column>
-			<el-table-column label="更新时间" min-width="120" align="center" show-overflow-tooltip>
-				<template #default="{ row }">
-					<el-tooltip :content="row.updated_at" placement="top">
-						<span>{{ formatDate(row.updated_at) }}</span>
-					</el-tooltip>
-				</template>
-			</el-table-column>
-			<el-table-column label="操作" min-width="120" align="center">
-				<template #default="{ row }">
-					<el-space>
-						<el-button type="primary" link @click.stop="handleEdit(row)">
-							<el-icon><Edit /></el-icon>编辑
-						</el-button>
-						<el-button type="success" link @click.stop="handleAddSub(row)">
-							<el-icon><Plus /></el-icon>添加子菜单
-						</el-button>
-						<el-popconfirm title="确认删除该菜单吗？" @confirm="handleDelete(row)">
-							<template #reference>
-								<el-button type="danger" link @click.stop>
-									<el-icon><Delete /></el-icon>删除
-								</el-button>
-							</template>
-						</el-popconfirm>
-					</el-space>
-				</template>
-			</el-table-column>
-		</el-table>
-
+				</el-table-column>
+				<el-table-column
+					prop="route_path"
+					label="路由路径"
+					min-width="120"
+					show-overflow-tooltip
+				>
+					<template #default="{ row }">
+						<el-tag size="small" effect="plain">{{ row.route_path }}</el-tag>
+					</template>
+				</el-table-column>
+				<el-table-column
+					prop="page_file_path"
+					label="页面文件路径"
+					min-width="120"
+					show-overflow-tooltip
+				>
+					<template #default="{ row }">
+						<el-tooltip :content="row.page_file_path" placement="top">
+							<span class="file-path">{{ row.page_file_path }}</span>
+						</el-tooltip>
+					</template>
+				</el-table-column>
+				<el-table-column prop="sort" label="排序" min-width="120" align="center">
+					<template #default="{ row }">
+						<el-input-number v-model="row.sort" :min="0" size="small" />
+					</template>
+				</el-table-column>
+				<el-table-column prop="hidden" label="显示状态" min-width="120" align="center">
+					<template #default="{ row }">
+						<el-switch
+							v-model="row.hidden"
+							:active-value="false"
+							:inactive-value="true"
+							active-text="显示"
+							inactive-text="隐藏"
+						/>
+					</template>
+				</el-table-column>
+				<el-table-column label="更新时间" min-width="120" align="center">
+					<template #default="{ row }">
+						<el-tooltip :content="row.updated_at" placement="top">
+							<span>{{ formatDate(row.updated_at) }}</span>
+						</el-tooltip>
+					</template>
+				</el-table-column>
+				<el-table-column label="操作" fixed="right" width="230" align="center">
+					<template #default="{ row }">
+						<el-space>
+							<el-button type="primary" link @click.stop="handleEdit(row)">
+								<el-icon><Edit /></el-icon>编辑
+							</el-button>
+							<el-button type="success" link @click.stop="handleAddSub(row)">
+								<el-icon><Plus /></el-icon>添加子菜单
+							</el-button>
+							<el-popconfirm title="确认删除该菜单吗？" @confirm="handleDelete(row)">
+								<template #reference>
+									<el-button type="danger" link @click.stop>
+										<el-icon><Delete /></el-icon>删除
+									</el-button>
+								</template>
+							</el-popconfirm>
+						</el-space>
+					</template>
+				</el-table-column>
+			</el-table>
+		</div>
 		<!-- 新增/编辑对话框 -->
+
 		<el-dialog
 			:title="dialogTitle"
 			v-model="dialogVisible"
@@ -249,6 +230,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { fetchMenuList, fetchCreateMenu, fetchUpdateMenu } from '@/api/services'
 
 // 模拟菜单数据
+
 const menuList = ref<IMenuItem[]>([])
 
 // 将扁平数据转换为树形结构
@@ -419,14 +401,6 @@ const loading = ref(false)
 const searchKeyword = ref('')
 const tableRef = ref()
 
-// 表格头部样式
-const tableHeaderStyle = {
-	background: 'var(--el-fill-color-light)',
-	color: 'var(--el-text-color-primary)',
-	fontWeight: 'bold',
-	height: '50px',
-}
-
 // 图标列表
 const iconList = [
 	'Menu',
@@ -471,136 +445,4 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
-.menu-container {
-	padding: 16px;
-	background-color: var(--el-bg-color);
-	min-height: 100%;
-}
-
-.header-section {
-	margin-bottom: 16px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.title-wrapper {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
-.page-title {
-	font-size: 20px;
-	font-weight: 600;
-	color: var(--el-text-color-primary);
-	margin: 0;
-}
-
-.table-section {
-	background-color: var(--el-bg-color);
-}
-
-.table-card {
-	border-radius: 8px;
-}
-
-.menu-title-cell {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
-.menu-icon {
-	font-size: 16px;
-	color: var(--el-text-color-secondary);
-}
-
-.dialog-form {
-	padding: 20px 0;
-}
-
-:deep(.el-dialog__body) {
-	padding-top: 10px;
-}
-
-:deep(.el-input-number .el-input__wrapper) {
-	width: 100%;
-}
-
-/* 适配暗黑模式 */
-:deep(.dark) {
-	.table-card {
-		border: 1px solid var(--el-border-color);
-	}
-}
-
-.table-toolbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 8px 0;
-}
-
-.search-input {
-	width: 300px;
-}
-
-.file-path {
-	color: var(--el-text-color-secondary);
-	font-family: monospace;
-}
-
-.icon-selector {
-	display: grid;
-	grid-template-columns: repeat(6, 1fr);
-	gap: 12px;
-	padding: 12px;
-}
-
-.icon-item {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 4px;
-	padding: 8px;
-	cursor: pointer;
-	border-radius: 4px;
-	transition: all 0.3s;
-}
-
-.icon-item:hover {
-	background-color: var(--el-fill-color-light);
-	color: var(--el-color-primary);
-}
-
-.icon-item .el-icon {
-	font-size: 20px;
-}
-
-.icon-item span {
-	font-size: 12px;
-}
-
-.form-help {
-	margin-top: 8px;
-}
-
-:deep(.el-form-item__content) {
-	flex-wrap: nowrap;
-}
-
-:deep(.el-alert) {
-	padding: 8px 12px;
-}
-
-:deep(.el-dialog__body) {
-	padding: 20px 30px;
-}
-
-:deep(.el-form--label-right) {
-	max-height: 60vh;
-	overflow-y: auto;
-}
-</style>
+<style scoped></style>

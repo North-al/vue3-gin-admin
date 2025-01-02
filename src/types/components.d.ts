@@ -7,7 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AuthCard: typeof import('./../components/AuthCard.vue')['default']
+    AuthCard: typeof import('./../components/Auth/AuthCard.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElButtonGroup: typeof import('element-plus/es')['ElButtonGroup']
@@ -31,18 +31,10 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
-    HelloWorld: typeof import('./../components/HelloWorld.vue')['default']
-    IconCommunity: typeof import('./../components/icons/IconCommunity.vue')['default']
-    IconDocumentation: typeof import('./../components/icons/IconDocumentation.vue')['default']
-    IconEcosystem: typeof import('./../components/icons/IconEcosystem.vue')['default']
-    IconSupport: typeof import('./../components/icons/IconSupport.vue')['default']
-    IconTooling: typeof import('./../components/icons/IconTooling.vue')['default']
-    RippleBackground: typeof import('./../components/RippleBackground.vue')['default']
+    RippleBackground: typeof import('./../components/Auth/RippleBackground.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TheWelcome: typeof import('./../components/TheWelcome.vue')['default']
-    WaveBackground: typeof import('./../components/WaveBackground.vue')['default']
-    WelcomeItem: typeof import('./../components/WelcomeItem.vue')['default']
+    WaveBackground: typeof import('./../components/Auth/WaveBackground.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

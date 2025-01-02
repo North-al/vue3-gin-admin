@@ -36,7 +36,10 @@ httpClient.interceptors.request.use(
 		}
 		return config
 	},
-	(error) => Promise.reject(error),
+	(error) => {
+		ElMessage.error(error.message)
+		return Promise.reject(error)
+	},
 )
 
 // 响应拦截器
