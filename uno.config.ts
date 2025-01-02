@@ -17,6 +17,8 @@ export default defineConfig({
 		'flex-end': 'flex items-center justify-end',
 		'flex-around': 'flex items-center justify-around',
 		'flex-between': 'flex items-center justify-between',
+		'btn-primary':
+			'w-full !h-12 text-lg !bg-gradient-to-r from-blue-500 to-indigo-600 border-none hover:shadow-xl hover:opacity-90 transition-all duration-300',
 	},
 	theme: {
 		colors: {

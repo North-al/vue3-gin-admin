@@ -287,7 +287,6 @@
 import { ref, computed, reactive } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Search, Refresh, Expand, Fold, Download } from '@element-plus/icons-vue'
 
 interface MenuForm {
 	id?: number
