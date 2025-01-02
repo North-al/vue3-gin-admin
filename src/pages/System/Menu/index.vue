@@ -11,152 +11,113 @@
 			</el-button>
 		</div>
 
-		<!-- 表格区域 -->
-		<div class="table-section">
-			<el-card shadow="hover" class="table-card">
-				<!-- 表格工具栏 -->
-				<template #header>
-					<div class="table-toolbar">
-						<div class="left">
-							<el-input
-								v-model="searchKeyword"
-								placeholder="搜索菜单名称/路径"
-								clearable
-								class="search-input"
-							>
-								<template #prefix>
-									<el-icon><Search /></el-icon>
-								</template>
-							</el-input>
-							<el-button-group class="ml-4">
-								<el-button icon="Refresh" @click="refreshTable">刷新</el-button>
-								<el-button icon="Expand" @click="expandAll">展开全部</el-button>
-								<el-button icon="Fold" @click="collapseAll">折叠全部</el-button>
-							</el-button-group>
-						</div>
-						<div class="right">
-							<el-button type="success" icon="Download" @click="exportData"
-								>导出</el-button
-							>
-						</div>
+		<!-- 表格主体 -->
+		<el-table
+			ref="tableRef"
+			v-loading="loading"
+			:data="treeMenuList"
+			row-key="id"
+			border
+			stripe
+			:tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+			size="small"
+			:header-cell-style="tableHeaderStyle"
+		>
+			<el-table-column type="selection" width="55" align="center" />
+			<el-table-column prop="id" label="ID" width="80" align="center" />
+			<el-table-column prop="title" label="菜单名称" min-width="120">
+				<template #default="{ row }">
+					<div class="menu-title-cell">
+						<el-icon v-if="row.icon" class="menu-icon"
+							><component :is="row.icon"
+						/></el-icon>
+						<span>{{ row.title }}</span>
+						<el-tag
+							v-if="row.children?.length"
+							size="small"
+							type="info"
+							effect="plain"
+							class="ml-2"
+							>{{ row.children.length }}个子项</el-tag
+						>
 					</div>
 				</template>
-
-				<!-- 表格主体 -->
-				<el-table
-					ref="tableRef"
-					v-loading="loading"
-					:data="filteredTreeMenuList"
-					row-key="id"
-					border
-					stripe
-					:tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-					style="width: 100%"
-					size="large"
-					:header-cell-style="tableHeaderStyle"
-					@row-click="handleRowClick"
-				>
-					<el-table-column type="selection" width="55" align="center" />
-					<el-table-column prop="id" label="ID" width="80" align="center" />
-					<el-table-column prop="title" label="菜单名称" min-width="200">
-						<template #default="{ row }">
-							<div class="menu-title-cell">
-								<el-icon v-if="row.icon" class="menu-icon"
-									><component :is="row.icon"
-								/></el-icon>
-								<span>{{ row.title }}</span>
-								<el-tag
-									v-if="row.children?.length"
-									size="small"
-									type="info"
-									effect="plain"
-									class="ml-2"
-									>{{ row.children.length }}个子项</el-tag
-								>
-							</div>
-						</template>
-					</el-table-column>
-					<el-table-column
-						prop="route_path"
-						label="路由路径"
-						min-width="180"
-						show-overflow-tooltip
-					>
-						<template #default="{ row }">
-							<el-tag size="small" effect="plain">{{ row.route_path }}</el-tag>
-						</template>
-					</el-table-column>
-					<el-table-column
-						prop="page_file_path"
-						label="页面文件路径"
-						min-width="220"
-						show-overflow-tooltip
-					>
-						<template #default="{ row }">
-							<el-tooltip :content="row.page_file_path" placement="top">
-								<span class="file-path">{{ row.page_file_path }}</span>
-							</el-tooltip>
-						</template>
-					</el-table-column>
-					<el-table-column prop="sort" label="排序" width="100" align="center">
-						<template #default="{ row }">
-							<el-input-number
-								v-model="row.sort"
-								:min="0"
-								size="small"
-								@change="handleSortChange(row)"
-							/>
-						</template>
-					</el-table-column>
-					<el-table-column prop="hidden" label="显示状态" width="120" align="center">
-						<template #default="{ row }">
-							<el-switch
-								v-model="row.hidden"
-								:active-value="false"
-								:inactive-value="true"
-								active-text="显示"
-								inactive-text="隐藏"
-								@change="handleStatusChange(row)"
-							/>
-						</template>
-					</el-table-column>
-					<el-table-column
-						label="更新时间"
-						width="180"
-						align="center"
-						show-overflow-tooltip
-					>
-						<template #default="{ row }">
-							<el-tooltip :content="row.updated_at" placement="top">
-								<span>{{ formatDate(row.updated_at) }}</span>
-							</el-tooltip>
-						</template>
-					</el-table-column>
-					<el-table-column label="操作" width="200" fixed="right" align="center">
-						<template #default="{ row }">
-							<el-space>
-								<el-button type="primary" link @click.stop="handleEdit(row)">
-									<el-icon><Edit /></el-icon>编辑
+			</el-table-column>
+			<el-table-column prop="icon" label="菜单图标" min-width="60">
+				<template #default="{ row }">
+					<template v-if="row.icon">
+						<el-icon><component :is="row.icon" /></el-icon>
+					</template>
+					<template v-else>
+						<span>-</span>
+					</template>
+				</template>
+			</el-table-column>
+			<el-table-column
+				prop="route_path"
+				label="路由路径"
+				min-width="120"
+				show-overflow-tooltip
+			>
+				<template #default="{ row }">
+					<el-tag size="small" effect="plain">{{ row.route_path }}</el-tag>
+				</template>
+			</el-table-column>
+			<el-table-column
+				prop="page_file_path"
+				label="页面文件路径"
+				min-width="120"
+				show-overflow-tooltip
+			>
+				<template #default="{ row }">
+					<el-tooltip :content="row.page_file_path" placement="top">
+						<span class="file-path">{{ row.page_file_path }}</span>
+					</el-tooltip>
+				</template>
+			</el-table-column>
+			<el-table-column prop="sort" label="排序" min-width="120" align="center">
+				<template #default="{ row }">
+					<el-input-number v-model="row.sort" :min="0" size="small" />
+				</template>
+			</el-table-column>
+			<el-table-column prop="hidden" label="显示状态" min-width="120" align="center">
+				<template #default="{ row }">
+					<el-switch
+						v-model="row.hidden"
+						:active-value="false"
+						:inactive-value="true"
+						active-text="显示"
+						inactive-text="隐藏"
+					/>
+				</template>
+			</el-table-column>
+			<el-table-column label="更新时间" min-width="120" align="center" show-overflow-tooltip>
+				<template #default="{ row }">
+					<el-tooltip :content="row.updated_at" placement="top">
+						<span>{{ formatDate(row.updated_at) }}</span>
+					</el-tooltip>
+				</template>
+			</el-table-column>
+			<el-table-column label="操作" min-width="120" align="center">
+				<template #default="{ row }">
+					<el-space>
+						<el-button type="primary" link @click.stop="handleEdit(row)">
+							<el-icon><Edit /></el-icon>编辑
+						</el-button>
+						<el-button type="success" link @click.stop="handleAddSub(row)">
+							<el-icon><Plus /></el-icon>添加子菜单
+						</el-button>
+						<el-popconfirm title="确认删除该菜单吗？" @confirm="handleDelete(row)">
+							<template #reference>
+								<el-button type="danger" link @click.stop>
+									<el-icon><Delete /></el-icon>删除
 								</el-button>
-								<el-button type="success" link @click.stop="handleAddSub(row)">
-									<el-icon><Plus /></el-icon>添加子菜单
-								</el-button>
-								<el-popconfirm
-									title="确认删除该菜单吗？"
-									@confirm="handleDelete(row)"
-								>
-									<template #reference>
-										<el-button type="danger" link @click.stop>
-											<el-icon><Delete /></el-icon>删除
-										</el-button>
-									</template>
-								</el-popconfirm>
-							</el-space>
-						</template>
-					</el-table-column>
-				</el-table>
-			</el-card>
-		</div>
+							</template>
+						</el-popconfirm>
+					</el-space>
+				</template>
+			</el-table-column>
+		</el-table>
 
 		<!-- 新增/编辑对话框 -->
 		<el-dialog
@@ -284,176 +245,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { ElMessage, ElMessageBox } from 'element-plus'
-
-interface MenuForm {
-	id?: number
-	parent_id: number | null
-	title: string
-	route_path: string
-	route_name: string
-	page_file_path: string
-	icon: string
-	hidden: boolean
-	keep_alive: boolean
-	sort: number
-}
+import { fetchMenuList, fetchCreateMenu, fetchUpdateMenu } from '@/api/services'
 
 // 模拟菜单数据
-const menuList = ref([
-	{
-		id: 1,
-		parent_id: 0,
-		page_file_path: '@/pages/Auth/SignIn.vue',
-		route_path: '/sign-in',
-		route_name: 'SignIn',
-		redirect: '',
-		title: '登录',
-		icon: 'User',
-		hidden: true,
-		keep_alive: true,
-		sort: 1,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-	{
-		id: 2,
-		parent_id: 0,
-		page_file_path: '@/pages/Dashboard/index.vue',
-		route_path: '/dashboard',
-		route_name: 'Dashboard',
-		redirect: '',
-		title: '仪表盘',
-		icon: 'DataBoard',
-		hidden: false,
-		keep_alive: true,
-		sort: 2,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-	{
-		id: 3,
-		parent_id: 0,
-		page_file_path: '@/pages/System',
-		route_path: '/system',
-		route_name: 'System',
-		redirect: '',
-		title: '系统管理',
-		icon: 'Setting',
-		hidden: false,
-		keep_alive: true,
-		sort: 3,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-	{
-		id: 4,
-		parent_id: 3,
-		page_file_path: '@/pages/System/User/index.vue',
-		route_path: '/system/user',
-		route_name: 'SystemUser',
-		redirect: '',
-		title: '用户管理',
-		icon: 'UserFilled',
-		hidden: false,
-		keep_alive: true,
-		sort: 1,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-	{
-		id: 5,
-		parent_id: 3,
-		page_file_path: '@/pages/System/Role/index.vue',
-		route_path: '/system/role',
-		route_name: 'SystemRole',
-		redirect: '',
-		title: '角色管理',
-		icon: 'Lock',
-		hidden: false,
-		keep_alive: true,
-		sort: 2,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-	{
-		id: 6,
-		parent_id: 3,
-		page_file_path: '@/pages/System/Menu/index.vue',
-		route_path: '/system/menu',
-		route_name: 'SystemMenu',
-		redirect: '',
-		title: '菜单管理',
-		icon: 'Menu',
-		hidden: false,
-		keep_alive: true,
-		sort: 3,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-	{
-		id: 7,
-		parent_id: 0,
-		page_file_path: '@/pages/Content',
-		route_path: '/content',
-		route_name: 'Content',
-		redirect: '',
-		title: '内容管理',
-		icon: 'Document',
-		hidden: false,
-		keep_alive: true,
-		sort: 4,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-	{
-		id: 8,
-		parent_id: 7,
-		page_file_path: '@/pages/Content/Article/index.vue',
-		route_path: '/content/article',
-		route_name: 'ContentArticle',
-		redirect: '',
-		title: '文章管理',
-		icon: 'Files',
-		hidden: false,
-		keep_alive: true,
-		sort: 1,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-	{
-		id: 9,
-		parent_id: 7,
-		page_file_path: '@/pages/Content/Category/index.vue',
-		route_path: '/content/category',
-		route_name: 'ContentCategory',
-		redirect: '',
-		title: '分类管理',
-		icon: 'FolderOpened',
-		hidden: false,
-		keep_alive: true,
-		sort: 2,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-	{
-		id: 10,
-		parent_id: 7,
-		page_file_path: '@/pages/Content/Tag/index.vue',
-		route_path: '/content/tag',
-		route_name: 'ContentTag',
-		redirect: '',
-		title: '标签管理',
-		icon: 'Collection',
-		hidden: false,
-		keep_alive: true,
-		sort: 3,
-		created_at: '2025-01-01 13:44:20',
-		updated_at: '2025-01-01 13:44:20',
-	},
-])
+const menuList = ref<IMenuItem[]>([])
 
 // 将扁平数据转换为树形结构
 const treeMenuList = computed(() => {
@@ -467,22 +263,6 @@ const treeMenuList = computed(() => {
 		return parent.parent_id === 0
 	})
 })
-
-// 处理行点击事件
-const handleRowClick = (row: any) => {
-	// 如果点击的是叶子节点（没有子菜单），则展开/折叠操作无效
-	if (!row.children?.length) return
-
-	// 获取当前行的展开状态
-	const expanded = tableRef.value.store.states.treeData.value[row.id]?.expanded
-
-	// 切换展开/折叠状态
-	if (expanded) {
-		tableRef.value.store.states.treeData.value[row.id].expanded = false
-	} else {
-		tableRef.value.store.states.treeData.value[row.id].expanded = true
-	}
-}
 
 // 表单校验规则增强
 const rules: FormRules = {
@@ -521,11 +301,12 @@ const rules: FormRules = {
 }
 
 // 初始化表单数据
-const initFormData = (): MenuForm => ({
+const initFormData = (): IMenuItem => ({
 	parent_id: null,
 	title: '',
 	route_path: '',
 	route_name: '',
+	redirect: '',
 	page_file_path: '',
 	icon: '',
 	hidden: false,
@@ -533,7 +314,7 @@ const initFormData = (): MenuForm => ({
 	sort: 0,
 })
 
-const formData = reactive<MenuForm>(initFormData())
+const formData = reactive<IMenuItem>(initFormData())
 const formRef = ref<FormInstance>()
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
@@ -600,14 +381,20 @@ const handleSubmit = async () => {
 			}
 		}
 
-		// 这里添加保存逻辑
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		// 根据是否有 id 判断是新增还是更新
+		if (formData.id) {
+			await fetchUpdateMenu(formData)
+			ElMessage.success('更新成功')
+		} else {
+			await fetchCreateMenu(formData)
+			ElMessage.success('添加成功')
+		}
 
-		ElMessage.success(formData.id ? '更新成功' : '添加成功')
 		dialogVisible.value = false
 		refreshTable()
-	} catch (error) {
-		console.error('表单验证失败:', error)
+	} catch (error: any) {
+		console.error('操作失败:', error)
+		ElMessage.error(error.message || '操作失败')
 	} finally {
 		submitLoading.value = false
 	}
@@ -621,68 +408,10 @@ const checkParentValid = (currentId: number, parentId: number): boolean => {
 	// 不能选择自己的子菜单作为父级
 	const findChildren = (id: number): boolean => {
 		const children = menuList.value.filter((item) => item.parent_id === id)
-		return children.some((child) => child.id === parentId || findChildren(child.id))
+		return children.some((child) => child.id === parentId || findChildren(child.id!))
 	}
 
 	return !findChildren(currentId)
-}
-
-// 处理排序变更
-const handleSortChange = async (row: any) => {
-	try {
-		// 这里添加更新排序的逻辑
-		await new Promise((resolve) => setTimeout(resolve, 500))
-		ElMessage.success('排序更新成功')
-	} catch (error) {
-		console.error('更新排序失败:', error)
-		ElMessage.error('排序更新失败')
-	}
-}
-
-// 处理状态变更
-const handleStatusChange = async (row: any) => {
-	try {
-		// 这里添加更新状态的逻辑
-		await new Promise((resolve) => setTimeout(resolve, 500))
-		ElMessage.success('状态更新成功')
-	} catch (error) {
-		console.error('更新状态失败:', error)
-		ElMessage.error('状态更新失败')
-		row.hidden = !row.hidden // 恢复原状态
-	}
-}
-
-// 搜索过滤优化
-const filteredTreeMenuList = computed(() => {
-	if (!searchKeyword.value) return treeMenuList.value
-
-	const search = searchKeyword.value.toLowerCase()
-	const filterNode = (data: any): boolean => {
-		const matchCurrent =
-			data.title.toLowerCase().includes(search) ||
-			data.route_path.toLowerCase().includes(search) ||
-			data.page_file_path.toLowerCase().includes(search)
-
-		if (matchCurrent) return true
-
-		return data.children?.some(filterNode) || false
-	}
-
-	return JSON.parse(JSON.stringify(treeMenuList.value)).filter(filterNode)
-})
-
-// 导出数据
-const exportData = () => {
-	const data = JSON.parse(JSON.stringify(menuList.value))
-	const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
-	const url = URL.createObjectURL(blob)
-	const link = document.createElement('a')
-	link.href = url
-	link.download = `menu-${new Date().toISOString().split('T')[0]}.json`
-	document.body.appendChild(link)
-	link.click()
-	document.body.removeChild(link)
-	URL.revokeObjectURL(url)
 }
 
 // 新增的数据和方法
@@ -722,25 +451,24 @@ const formatDate = (date: string) => {
 	return new Date(date).toLocaleString()
 }
 
-// 展开/折叠所有
-const expandAll = () => {
-	tableRef.value?.expandAll()
-}
-
-const collapseAll = () => {
-	tableRef.value?.collapseAll()
-}
-
 // 刷新表格
 const refreshTable = async () => {
 	loading.value = true
 	try {
-		// 这里添加刷新数据的逻辑
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		const data = await fetchMenuList()
+		menuList.value = data
+	} catch (error: any) {
+		console.error('获取菜单列表失败:', error)
+		ElMessage.error(error.message || '获取菜单列表失败')
 	} finally {
 		loading.value = false
 	}
 }
+
+// 组件挂载时获取菜单列表
+onMounted(() => {
+	refreshTable()
+})
 </script>
 
 <style scoped>
