@@ -99,7 +99,12 @@
 				</el-table-column>
 			</el-table> -->
 
-			<PagingTable :tableData="treeMenuList" :columns="columns" :loading="loading" />
+			<PagingTable
+				:has-selection="true"
+				:tableData="treeMenuList"
+				:columns="columns"
+				:loading="loading"
+			/>
 		</div>
 		<!-- 新增/编辑对话框 -->
 

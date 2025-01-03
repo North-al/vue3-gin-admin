@@ -6,6 +6,12 @@ interface Pagination {
 	total: number
 }
 
+const headerRowStyle = {
+	backgroundColor: '#F5F6FA',
+	fontWeight: '500',
+	color: '#787878',
+}
+
 export default defineComponent({
 	name: 'PaginatedTable',
 	props: {
@@ -25,6 +31,10 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		hasSelection: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	emits: ['update:pagination'],
 	setup(props, { emit, slots }) {
@@ -38,7 +48,13 @@ export default defineComponent({
 		return () => (
 			<div>
 				{/* 表格组件 */}
-				<el-table data={props.tableData} border v-loading={props.loading}>
+				<el-table
+					v-loading={props.loading}
+					class="paging-table"
+					header-row-style={headerRowStyle}
+					data={props.tableData}
+				>
+					{props.hasSelection && <el-table-column type="selection" width="55" />}
 					{props.columns.map((column) => (
 						<el-table-column
 							key={column.prop}
