@@ -2,7 +2,7 @@
 	<div class="menu-container">
 		<!-- 表格主体 -->
 		<div px-20px>
-			<el-table v-loading="loading" :data="treeMenuList" style="width: 100%; height: 100%">
+			<!-- <el-table v-loading="loading" :data="treeMenuList" style="width: 100%; height: 100%">
 				<el-table-column type="selection" width="55" align="center" />
 				<el-table-column prop="id" label="ID" width="80" align="center" />
 				<el-table-column prop="title" label="菜单名称" min-width="120">
@@ -97,7 +97,9 @@
 						</el-space>
 					</template>
 				</el-table-column>
-			</el-table>
+			</el-table> -->
+
+			<PagingTable :tableData="treeMenuList" :columns="columns" :loading="loading" />
 		</div>
 		<!-- 新增/编辑对话框 -->
 
@@ -225,11 +227,58 @@
 	</div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import type { FormInstance, FormRules } from 'element-plus'
 import { fetchMenuList, fetchCreateMenu, fetchUpdateMenu } from '@/api/services'
 
 // 模拟菜单数据
+
+const columns = ref<TableColumn[]>([
+	{ prop: 'id', label: 'ID', width: '80' },
+	{
+		prop: 'title',
+		label: '菜单名称',
+		minWidth: '120',
+		slot: ({ row }: { row: any }) => (
+			<div class="menu-title-cell">
+				{row.icon && <el-icon class="menu-icon">{h(resolveComponent(row.icon))}</el-icon>}
+				<span>{row.title}</span>
+				{row.children?.length && (
+					<el-tag size="small" type="info" effect="plain" class="ml-2">
+						{row.children.length}个子项
+					</el-tag>
+				)}
+			</div>
+		),
+	},
+	{
+		prop: 'icon',
+		label: '菜单图标',
+		minWidth: '60',
+		slot: ({ row }: { row: any }) => (
+			<div>
+				{row.icon ? <el-icon>{h(resolveComponent(row.icon))}</el-icon> : <span>-</span>}
+			</div>
+		),
+	},
+	{ prop: 'route_path', label: '路由路径', minWidth: '120' },
+	{ prop: 'page_file_path', label: '页面文件路径', minWidth: '120' },
+	{ prop: 'sort', label: '排序', minWidth: '120' },
+	{ prop: 'hidden', label: '显示状态', minWidth: '120' },
+	{ prop: 'updated_at', label: '更新时间', minWidth: '120' },
+	{
+		prop: 'action',
+		label: '操作',
+		minWidth: '230',
+		slot: ({ row }) => (
+			<div>
+				<el-button type="primary" link onClick={() => handleEdit(row)}>
+					编辑
+				</el-button>
+			</div>
+		),
+	},
+])
 
 const menuList = ref<IMenuItem[]>([])
 
