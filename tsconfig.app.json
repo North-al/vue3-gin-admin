@@ -18,7 +18,7 @@
 		"baseUrl": "./",
 		"jsx": "preserve",
 		"jsxFactory": "h",
-		"jsxFragmentFactory": "Fragment",
+		"jsxImportSource": "vue",
 		"types": ["vite/client", "element-plus/global"],
 		"paths": {
 			"@": ["src"],

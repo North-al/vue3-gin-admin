@@ -7,17 +7,14 @@ const headerRowStyle = {
 	color: '#787878',
 }
 
-type BaseProps<T> = {
+type PagingTableProps<T> = {
 	loading: boolean
 	hasSelection: boolean
 	tableData: T[]
 	columns: TableColumn[]
+	total?: number
+	pagination?: Pagination | undefined | null
 }
-
-type PagingTableProps<T> =
-	| (BaseProps<T> & { hasPagination: false })
-	| (BaseProps<T> & { hasPagination: true; pagination: Pagination; total: number })
-
 interface IEmits {
 	update: (pagination: Pagination) => void
 }
@@ -61,10 +58,10 @@ export default defineComponent(
 				</el-table>
 
 				{/* 分页组件 */}
-				{props.hasPagination && (
+				{props.pagination && (
 					<Pagination
-						pagination={props.pagination!}
-						total={props.total!}
+						pagination={props.pagination}
+						total={props.total || 0}
 						onUpdate={handlePaginationChange}
 					/>
 				)}
@@ -89,19 +86,10 @@ export default defineComponent(
 				type: Array as PropType<TableColumn[]>,
 				required: true,
 			},
-			// 是否显示分页组件
-			hasPagination: {
-				type: Boolean,
-				default: false,
-			},
 			// 分页组件配置
 			pagination: {
-				type: Object as PropType<Pagination>,
+				type: Object as PropType<Pagination | undefined | null>,
 				required: false,
-				default: () => ({
-					page: 1,
-					limit: 10,
-				}),
 			},
 			total: {
 				type: Number,

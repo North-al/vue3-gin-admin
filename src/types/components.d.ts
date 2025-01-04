@@ -34,6 +34,7 @@ declare module 'vue' {
     ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
     Pagination: typeof import('./../components/Pagination/index.tsx')['default']
     PagingTable: typeof import('./../components/PagingTable/index.tsx')['default']
+    Ppp: typeof import('./../components/PagingTable/ppp.vue')['default']
     RippleBackground: typeof import('./../components/Auth/RippleBackground.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

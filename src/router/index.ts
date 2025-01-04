@@ -25,7 +25,7 @@ const router = createRouter({
 				{
 					path: '/system/menu',
 					name: 'SystemMenu',
-					component: () => import('../pages/System/Menu/index.vue'),
+					component: () => import('../pages/System/Menu'),
 				},
 			],
 		},
