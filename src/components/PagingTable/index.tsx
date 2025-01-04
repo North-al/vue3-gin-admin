@@ -99,8 +99,8 @@ export default defineComponent(
 				type: Object as PropType<Pagination>,
 				required: false,
 				default: () => ({
-					currentPage: 1,
-					pageSize: 10,
+					page: 1,
+					limit: 10,
 				}),
 			},
 			total: {

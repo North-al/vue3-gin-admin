@@ -2,108 +2,14 @@
 	<div class="menu-container">
 		<!-- 表格主体 -->
 		<div px-20px>
-			<!-- <el-table v-loading="loading" :data="treeMenuList" style="width: 100%; height: 100%">
-				<el-table-column type="selection" width="55" align="center" />
-				<el-table-column prop="id" label="ID" width="80" align="center" />
-				<el-table-column prop="title" label="菜单名称" min-width="120">
-					<template #default="{ row }">
-						<div class="menu-title-cell">
-							<el-icon v-if="row.icon" class="menu-icon"
-								><component :is="row.icon"
-							/></el-icon>
-							<span>{{ row.title }}</span>
-							<el-tag
-								v-if="row.children?.length"
-								size="small"
-								type="info"
-								effect="plain"
-								class="ml-2"
-								>{{ row.children.length }}个子项</el-tag
-							>
-						</div>
-					</template>
-				</el-table-column>
-				<el-table-column prop="icon" label="菜单图标" min-width="60">
-					<template #default="{ row }">
-						<template v-if="row.icon">
-							<el-icon><component :is="row.icon" /></el-icon>
-						</template>
-						<template v-else>
-							<span>-</span>
-						</template>
-					</template>
-				</el-table-column>
-				<el-table-column
-					prop="route_path"
-					label="路由路径"
-					min-width="120"
-					show-overflow-tooltip
-				>
-					<template #default="{ row }">
-						<el-tag size="small" effect="plain">{{ row.route_path }}</el-tag>
-					</template>
-				</el-table-column>
-				<el-table-column
-					prop="page_file_path"
-					label="页面文件路径"
-					min-width="120"
-					show-overflow-tooltip
-				>
-					<template #default="{ row }">
-						<el-tooltip :content="row.page_file_path" placement="top">
-							<span class="file-path">{{ row.page_file_path }}</span>
-						</el-tooltip>
-					</template>
-				</el-table-column>
-				<el-table-column prop="sort" label="排序" min-width="120" align="center">
-					<template #default="{ row }">
-						<el-input-number v-model="row.sort" :min="0" size="small" />
-					</template>
-				</el-table-column>
-				<el-table-column prop="hidden" label="显示状态" min-width="120" align="center">
-					<template #default="{ row }">
-						<el-switch
-							v-model="row.hidden"
-							:active-value="false"
-							:inactive-value="true"
-							active-text="显示"
-							inactive-text="隐藏"
-						/>
-					</template>
-				</el-table-column>
-				<el-table-column label="更新时间" min-width="120" align="center">
-					<template #default="{ row }">
-						<el-tooltip :content="row.updated_at" placement="top">
-							<span>{{ formatDate(row.updated_at) }}</span>
-						</el-tooltip>
-					</template>
-				</el-table-column>
-				<el-table-column label="操作" fixed="right" width="230" align="center">
-					<template #default="{ row }">
-						<el-space>
-							<el-button type="primary" link @click.stop="handleEdit(row)">
-								<el-icon><Edit /></el-icon>编辑
-							</el-button>
-							<el-button type="success" link @click.stop="handleAddSub(row)">
-								<el-icon><Plus /></el-icon>添加子菜单
-							</el-button>
-							<el-popconfirm title="确认删除该菜单吗？" @confirm="handleDelete(row)">
-								<template #reference>
-									<el-button type="danger" link @click.stop>
-										<el-icon><Delete /></el-icon>删除
-									</el-button>
-								</template>
-							</el-popconfirm>
-						</el-space>
-					</template>
-				</el-table-column>
-			</el-table> -->
-
 			<PagingTable
 				:has-selection="true"
 				:tableData="treeMenuList"
 				:columns="columns"
 				:loading="loading"
+				:hasPagination="false"
+				:pagination="{ page: 1, limit: 10 }"
+				:total="0"
 			/>
 		</div>
 		<!-- 新增/编辑对话框 -->

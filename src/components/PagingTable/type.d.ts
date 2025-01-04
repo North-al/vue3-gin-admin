@@ -10,8 +10,8 @@ declare global {
 	}
 
 	interface Pagination {
-		currentPage: number
-		pageSize: number
+		page: number
+		limit: number
 	}
 }
 
