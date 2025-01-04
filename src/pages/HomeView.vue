@@ -9,10 +9,10 @@ const columns = ref([
 	{
 		prop: 'name',
 		label: 'Name',
-		width: '180',
+		minWidth: '180',
 		slot: (props: { row: any }) => <span style="color: red">{props.row.name} </span>,
 	},
-	{ prop: 'age', label: 'Age', width: '100', slot: 'age' },
+	{ prop: 'age', label: 'Age', minWidth: '100', slot: 'age' },
 ])
 
 const pagination = ref({
@@ -31,14 +31,18 @@ const handlePaginationChange = (newPagination: any) => {
 <template>
 	<div>
 		<PagingTable
+			:loading="false"
 			:tableData="tableData"
 			:columns="columns"
-			:pagination="pagination"
-			@update:pagination="handlePaginationChange"
+			:hasPagination="false"
+			:hasSelection="false"
+			:total="100"
 		>
 			<template #age="{ row }">
 				<span style="color: green">{{ row.age }}</span>
 			</template>
 		</PagingTable>
+
+		<Pagination :pagination="pagination" :total="100" @update="handlePaginationChange" />
 	</div>
 </template>

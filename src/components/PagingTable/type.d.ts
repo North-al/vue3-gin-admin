@@ -8,6 +8,11 @@ declare global {
 		slot?: string | ((props: { row: any }) => JSX.Element)
 		minWidth?: string | number
 	}
+
+	interface Pagination {
+		currentPage: number
+		pageSize: number
+	}
 }
 
 export {}
