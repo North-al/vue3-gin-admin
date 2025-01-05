@@ -13,6 +13,16 @@ declare global {
 		page: number
 		limit: number
 	}
+
+	interface ISearchConfig {
+		type: 'input' | 'select' | 'date' | 'date-range' | 'cascader'
+		label: string
+		model: string
+		defaultValue?: any
+		placeholder?: string
+		options?: { label: string; value: string }[]
+		props?: Record<string, any>
+	}
 }
 
 export {}

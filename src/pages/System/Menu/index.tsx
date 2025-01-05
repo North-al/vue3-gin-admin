@@ -1,25 +1,5 @@
 import type { FormInstance, FormRules } from 'element-plus'
 import { fetchMenuList, fetchCreateMenu, fetchUpdateMenu } from '@/api/services'
-import type { SetupContext } from 'vue'
-import PagingTable from '@/components/PagingTable'
-
-// 模拟菜单数据
-
-// interface IMenuItem {
-// 	id?: number
-// 	parent_id: number | null
-// 	title: string
-// 	route_path: string
-// 	route_name: string
-// 	redirect: string
-// 	page_file_path: string
-// 	icon: string
-// 	hidden: boolean
-// 	keep_alive: boolean
-// 	sort: number
-// 	created_at?: string
-// 	updated_at?: string
-// }
 
 const columns: TableColumn[] = [
 	{ prop: 'id', label: 'ID' },
@@ -44,12 +24,27 @@ const columns: TableColumn[] = [
 	{ prop: 'updated_at', label: '更新时间' },
 ]
 
+const searchConfig: ISearchConfig[] = [
+	{ type: 'input', label: '名称', model: 'title', placeholder: '请输入名称' },
+	{ type: 'input', label: '路径', model: 'route_path', placeholder: '请输入路径' },
+	{ type: 'input', label: '名称', model: 'route_name', placeholder: '请输入名称' },
+	{ type: 'input', label: '重定向', model: 'redirect', placeholder: '请输入重定向' },
+	{
+		type: 'input',
+		label: '页面文件路径',
+		model: 'page_file_path',
+		placeholder: '请输入页面文件路径',
+	},
+]
+
 export default defineComponent(() => {
 	const { list } = useTable<IMenuItem>(fetchMenuList, {}, false)
 
 	return () => (
 		<div>
-			<PagingTable
+			<searchForm config={searchConfig} class="mb-4" />
+
+			<pagingTable
 				loading={false}
 				hasSelection={false}
 				tableData={list.value}

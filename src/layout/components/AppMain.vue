@@ -12,6 +12,6 @@
 	background: #fff;
 	box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.15);
 	height: 100%;
-	padding: 12px 2px 0 12px;
+	padding: 12px 12px 0 12px;
 }
 </style>
