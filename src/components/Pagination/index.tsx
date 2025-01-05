@@ -19,8 +19,8 @@ export default defineComponent({
 		return () => (
 			<div class="flex-end mt-12px">
 				<el-pagination
-					v-model:currentPage={props.pagination.currentPage}
-					v-model:pageSize={props.pagination.pageSize}
+					v-model:currentPage={props.pagination.page}
+					v-model:pageSize={props.pagination.limit}
 					total={props.total}
 					layout="slot, prev, pager, next, sizes, jumper"
 					background

@@ -19,11 +19,36 @@ interface IEmits {
 	update: (pagination: Pagination) => void
 }
 
-export default defineComponent(
-	<T extends Record<string, any>>(
-		props: PagingTableProps<T>,
-		{ emit, slots }: SetupContext<IEmits>,
-	) => {
+export default defineComponent({
+	props: {
+		loading: {
+			type: Boolean,
+			default: false,
+		},
+		hasSelection: {
+			type: Boolean,
+			default: false,
+		},
+		tableData: {
+			type: Array as PropType<any[]>,
+			required: true,
+		},
+		columns: {
+			type: Array as PropType<TableColumn[]>,
+			required: true,
+		},
+		// 分页组件配置
+		pagination: {
+			type: Object as PropType<Pagination | undefined | null>,
+			required: false,
+		},
+		total: {
+			type: Number,
+			required: false,
+			default: 0,
+		},
+	},
+	setup(props, { emit, slots }) {
 		const handlePaginationChange = (pagination: Pagination) => {
 			emit('update', pagination)
 		}
@@ -68,34 +93,4 @@ export default defineComponent(
 			</div>
 		)
 	},
-	{
-		props: {
-			loading: {
-				type: Boolean,
-				default: false,
-			},
-			hasSelection: {
-				type: Boolean,
-				default: false,
-			},
-			tableData: {
-				type: Array as PropType<any[]>,
-				required: true,
-			},
-			columns: {
-				type: Array as PropType<TableColumn[]>,
-				required: true,
-			},
-			// 分页组件配置
-			pagination: {
-				type: Object as PropType<Pagination | undefined | null>,
-				required: false,
-			},
-			total: {
-				type: Number,
-				required: false,
-				default: 0,
-			},
-		},
-	},
-)
+})
