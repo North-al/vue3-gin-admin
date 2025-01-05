@@ -28,7 +28,12 @@ const searchConfig: ISearchConfig[] = [
 	{ type: 'input', label: '名称', model: 'title', placeholder: '请输入名称' },
 	{ type: 'input', label: '路径', model: 'route_path', placeholder: '请输入路径' },
 	{ type: 'input', label: '名称', model: 'route_name', placeholder: '请输入名称' },
-	{ type: 'input', label: '重定向', model: 'redirect', placeholder: '请输入重定向' },
+	{
+		type: 'input',
+		label: '重定向',
+		model: 'redirect',
+		placeholder: '请输入重定向',
+	},
 	{
 		type: 'input',
 		label: '页面文件路径',
@@ -40,9 +45,13 @@ const searchConfig: ISearchConfig[] = [
 export default defineComponent(() => {
 	const { list } = useTable<IMenuItem>(fetchMenuList, {}, false)
 
+	const handleSubmit = (query: Record<string, any>) => {
+		console.log(query)
+	}
+
 	return () => (
 		<div>
-			<searchForm config={searchConfig} class="mb-4" />
+			<searchForm config={searchConfig} class="mb-4" onSubmit={handleSubmit} />
 
 			<pagingTable
 				loading={false}

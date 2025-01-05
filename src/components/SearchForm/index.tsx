@@ -1,35 +1,12 @@
-const query = ref<Record<string, any>>({})
+interface SearchFormQuery {
+	[key: string]: string | number | boolean | undefined | '' | null | []
+}
+
 const oneLineMaxComponent = 4
 
-const createElInput = (config: ISearchConfig) => {
-	return (
-		<el-input
-			v-model={query.value[config.model]}
-			placeholder={config.placeholder || '请输入' + config.label}
-			clearable
-			suffix-icon="Search"
-			{...config.props}
-		/>
-	)
-}
-
-const createElSelect = (config: ISearchConfig) => {
-	return (
-		<el-select
-			v-model={query.value[config.model]}
-			placeholder={config.placeholder || '请选择' + config.label}
-			clearable
-			{...config.props}
-		>
-			{config.options?.map((option) => (
-				<el-option key={option.value} label={option.label} value={option.value} />
-			))}
-		</el-select>
-	)
-}
-
 export default defineComponent(
-	(props) => {
+	(props, { emit }) => {
+		const query = ref<Record<string, any>>({})
 		// 初始化
 		const initQuery = () => {
 			query.value = props.config.reduce(
@@ -40,7 +17,8 @@ export default defineComponent(
 				{} as Record<string, any>,
 			)
 		}
-		initQuery()
+
+		onMounted(initQuery)
 
 		const filterFields = computed(() =>
 			[...props.config].splice(
@@ -57,12 +35,41 @@ export default defineComponent(
 				: 6,
 		)
 
+		const createElInput = (config: ISearchConfig) => {
+			return (
+				<el-input
+					v-model={query.value[config.model]}
+					placeholder={config.placeholder || '请输入' + config.label}
+					clearable
+					suffix-icon="Search"
+					{...config.props}
+				/>
+			)
+		}
+
+		const createElSelect = (config: ISearchConfig) => {
+			return (
+				<el-select
+					v-model={query.value[config.model]}
+					placeholder={config.placeholder || '请选择' + config.label}
+					clearable
+					{...config.props}
+				>
+					{config.options?.map((option) => (
+						<el-option key={option.value} label={option.label} value={option.value} />
+					))}
+				</el-select>
+			)
+		}
+
 		const handleSubmit = () => {
 			console.log(query.value)
+			emit('submit', query.value)
 		}
 
 		const handleReset = () => {
-			console.log('reset')
+			initQuery()
+			emit('reset')
 		}
 
 		return () => (
@@ -121,8 +128,13 @@ export default defineComponent(
 		)
 	},
 	{
+		name: 'SearchForm',
 		props: {
 			config: Object as PropType<ISearchConfig[]>,
+		},
+		emits: {
+			submit: (query: SearchFormQuery) => true,
+			reset: () => true,
 		},
 	},
 )
