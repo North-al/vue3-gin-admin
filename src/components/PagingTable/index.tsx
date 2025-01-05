@@ -73,6 +73,7 @@ export default defineComponent({
 						return (
 							<el-table-column
 								key={prop}
+								prop={prop}
 								{...rest}
 								v-slots={{
 									default: slot,

@@ -68,6 +68,7 @@ declare global {
   const triggerRef: typeof import('vue')['triggerRef']
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
+  const useAuthForm: typeof import('../hooks/useAuthForm')['useAuthForm']
   const useCounterStore: typeof import('../stores/counter')['useCounterStore']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
@@ -78,6 +79,7 @@ declare global {
   const useRouter: typeof import('vue-router')['useRouter']
   const useSettingStore: typeof import('../stores/modules/setting')['useSettingStore']
   const useSlots: typeof import('vue')['useSlots']
+  const useTable: typeof import('../hooks/useTable')['useTable']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
@@ -97,6 +99,7 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
@@ -156,6 +159,7 @@ declare module 'vue' {
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
+    readonly useAuthForm: UnwrapRef<typeof import('../hooks/useAuthForm')['useAuthForm']>
     readonly useCounterStore: UnwrapRef<typeof import('../stores/counter')['useCounterStore']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
@@ -166,6 +170,7 @@ declare module 'vue' {
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useSettingStore: UnwrapRef<typeof import('../stores/modules/setting')['useSettingStore']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
+    readonly useTable: UnwrapRef<typeof import('../hooks/useTable')['useTable']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>

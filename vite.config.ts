@@ -21,7 +21,7 @@ export default defineConfig({
 		AutoImport({
 			imports: ['vue', 'vue-router', 'pinia'],
 			dts: 'src/types/auto-imports.d.ts',
-			dirs: ['src/stores'],
+			dirs: ['src/stores', 'src/hooks'],
 			vueTemplate: true,
 			resolvers: [ElementPlusResolver(), IconsResolver()],
 		}),
