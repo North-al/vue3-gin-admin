@@ -47,6 +47,24 @@ export default defineConfig({
 			'@': resolve(__dirname, 'src'),
 		},
 	},
+	build: {
+		rollupOptions: {
+		  output: {
+			manualChunks: {
+			  'element-plus': ['element-plus'],
+			  'vendor': ['vue', 'vue-router', 'pinia']
+			}
+		  }
+		},
+		// 启用 gzip 压缩
+		minify: 'terser',
+		terserOptions: {
+		  compress: {
+			drop_console: true,
+			drop_debugger: true
+		  }
+		},
+	},
 	server: {
 		port: 5000,
 		host: true,

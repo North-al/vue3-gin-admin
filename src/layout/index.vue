@@ -1,8 +1,12 @@
 <script setup lang="tsx">
-import AppHeader from './components/AppHeader.vue'
-import AppSidebar from './components/AppSidebar.vue'
+// import AppHeader from './components/AppHeader.vue'
+// import AppSidebar from './components/AppSidebar.vue'
 import AppMain from './components/AppMain.vue'
-import AppFooter from './components/AppFooter.vue'
+// import AppFooter from './components/AppFooter.vue'
+
+const AppHeader = defineAsyncComponent(() => import('./components/AppHeader.vue'))
+const AppFooter = defineAsyncComponent(() => import('./components/AppFooter.vue'))
+const AppSidebar = defineAsyncComponent(() => import('./components/AppSidebar.vue'))
 </script>
 
 <template>
@@ -23,6 +27,9 @@ import AppFooter from './components/AppFooter.vue'
 	display: flex;
 	width: 100%;
 	height: 100vh;
+	// 使用 transform 替代 position 动画
+	transform: translate3d(0, 0, 0);
+	will-change: transform; // 仅在动画元素上使用
 
 	.sidebar-container {
 		width: 220px;
@@ -37,6 +44,8 @@ import AppFooter from './components/AppFooter.vue'
 		flex-direction: column;
 		overflow: hidden;
 		box-sizing: border-box;
+		// 开启硬件加速
+		transform: translateZ(0);
 	}
 
 	.main-content {

@@ -1,5 +1,4 @@
-import type { FormInstance, FormRules } from 'element-plus'
-import { fetchMenuList, fetchCreateMenu, fetchUpdateMenu } from '@/api/services'
+import { fetchMenuList } from '@/api/services'
 
 const columns: TableColumn[] = [
 	{ prop: 'id', label: 'ID' },
@@ -59,19 +58,7 @@ export default defineComponent(() => {
 				<pagingTable
 					loading={false}
 					hasSelection={false}
-					tableData={[
-						...list.value,
-						...list.value,
-						...list.value,
-						...list.value,
-						...list.value,
-						...list.value,
-						...list.value,
-						...list.value,
-						...list.value,
-						...list.value,
-						...list.value,
-					]}
+					tableData={list.value}
 					columns={columns}
 				/>
 			</el-card>
