@@ -13,7 +13,7 @@ import AppFooter from './components/AppFooter.vue'
 			<div class="main-content">
 				<AppMain />
 			</div>
-            <AppFooter />
+			<AppFooter />
 		</div>
 	</div>
 </template>
@@ -36,13 +36,14 @@ import AppFooter from './components/AppFooter.vue'
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
+		box-sizing: border-box;
 	}
 
 	.main-content {
 		flex: 1;
 		padding: 8px;
-		overflow: auto;
-		background: #eceef1;
+		// overflow: auto;
+		// background: #eceef1;
 	}
 }
 </style>

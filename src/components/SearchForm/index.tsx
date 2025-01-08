@@ -2,6 +2,7 @@ interface SearchFormQuery {
 	[key: string]: string | number | boolean | undefined | '' | null | []
 }
 
+// 一行最多显示的组件数
 const oneLineMaxComponent = 4
 
 export default defineComponent(
