@@ -31,11 +31,11 @@ const router = createRouter({
 		},
 		{
 			path: '/signin',
-			component: () => import('@/pages/Auth/SignIn.vue'),
+			component: () => import('@/pages/Auth/SignIn.tsx'),
 		},
 		{
 			path: '/signup',
-			component: () => import('@/pages/Auth/SignUp.vue'),
+			component: () => import('@/pages/Auth/SignUp.tsx'),
 		},
 	],
 })

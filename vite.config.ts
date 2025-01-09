@@ -6,7 +6,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import UnoCSS from 'unocss/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { ElementPlusResolver, AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 // import vueDevTools from 'vite-plugin-vue-devtools'
@@ -19,11 +19,18 @@ export default defineConfig({
 		UnoCSS(),
 		// vueDevTools(),
 		AutoImport({
-			imports: ['vue', 'vue-router', 'pinia'],
+			imports: [
+				'vue',
+				'vue-router',
+				'pinia',
+				{
+					'ant-design-vue': [['message', 'AMessage']],
+				},
+			],
 			dts: 'src/types/auto-imports.d.ts',
 			dirs: ['src/stores', 'src/hooks'],
 			vueTemplate: true,
-			resolvers: [ElementPlusResolver(), IconsResolver()],
+			resolvers: [AntDesignVueResolver({}), IconsResolver()],
 		}),
 		// 自动导入组件
 		Components({
@@ -34,7 +41,20 @@ export default defineConfig({
 			// 配置文件生成位置
 			include: [/\.vue$/, /\.tsx$/],
 			dts: 'src/types/components.d.ts',
-			resolvers: [ElementPlusResolver()],
+			resolvers: [
+				AntDesignVueResolver({
+					importStyle: false, // css in js
+					// resolveIcons: true
+				}),
+				(componentName) => {
+					if (componentName === 'Iconify') {
+						return {
+							name: 'Icon',
+							from: '@iconify/vue',
+						}
+					}
+				},
+			],
 		}),
 		Icons({
 			compiler: 'vue3',
@@ -49,20 +69,20 @@ export default defineConfig({
 	},
 	build: {
 		rollupOptions: {
-		  output: {
-			manualChunks: {
-			  'element-plus': ['element-plus'],
-			  'vendor': ['vue', 'vue-router', 'pinia']
-			}
-		  }
+			output: {
+				manualChunks: {
+					'element-plus': ['element-plus'],
+					vendor: ['vue', 'vue-router', 'pinia'],
+				},
+			},
 		},
 		// 启用 gzip 压缩
 		minify: 'terser',
 		terserOptions: {
-		  compress: {
-			drop_console: true,
-			drop_debugger: true
-		  }
+			compress: {
+				drop_console: true,
+				drop_debugger: true,
+			},
 		},
 	},
 	server: {

@@ -14,7 +14,7 @@ export class ApiHandler {
 	public static async handleError(error: any) {
 		// 更详细的错误处理
 		const errorMessage = error.response?.data?.message || error.message || '请求错误'
-		ElMessage.error(errorMessage)
+		AMessage.error(errorMessage)
 
 		// 可以根据状态码处理不同情况
 		if (error.response?.status === 401) {

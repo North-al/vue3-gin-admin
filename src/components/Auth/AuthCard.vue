@@ -7,9 +7,7 @@
 			<!-- Brand logo circle -->
 			<div :class="authStyles.brandIcon()" class="-top-12">
 				<div :class="authStyles.brandIcon({ inner: true })">
-					<el-icon class="text-4xl text-white">
-						<component :is="icon" />
-					</el-icon>
+					<iconify class="text-4xl text-white" :icon="icon" />
 				</div>
 			</div>
 

@@ -37,7 +37,7 @@ httpClient.interceptors.request.use(
 		return config
 	},
 	(error) => {
-		ElMessage.error(error.message)
+		AMessage.error(error.message)
 		return Promise.reject(error)
 	},
 )
