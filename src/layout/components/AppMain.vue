@@ -1,8 +1,8 @@
 <template>
 	<div class="app-main">
-		<el-scrollbar :height="`calc(100vh - ${104}px)`">
+		<div :style="{ height: `calc(100vh - ${104}px); overflow: auto` }">
 			<router-view />
-		</el-scrollbar>
+		</div>
 	</div>
 </template>
 

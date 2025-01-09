@@ -50,18 +50,18 @@ export default defineComponent(() => {
 
 	return () => (
 		<>
-			<el-card class="mb-2">
+			{/* <el-card class="mb-2">
 				<searchForm config={searchConfig} onSubmit={handleSubmit} />
-			</el-card>
+			</el-card> */}
 
-			<el-card>
+			{/* <el-card>
 				<pagingTable
 					loading={false}
 					hasSelection={false}
 					tableData={list.value}
 					columns={columns}
 				/>
-			</el-card>
+			</el-card> */}
 		</>
 	)
 }, {})

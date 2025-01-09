@@ -55,33 +55,31 @@ export default defineComponent({
 		return () => (
 			<div>
 				{/* 表格组件 */}
-				<el-table
+				<a-table
 					v-loading={props.loading}
 					class="paging-table"
 					header-row-style={headerRowStyle}
 					data={props.tableData}
 				>
-					{props.hasSelection && <el-table-column type="selection" width="55" />}
+					{props.hasSelection && <a-table-column type="selection" width="55" />}
 					{props.columns.map((column) => {
-						const slot =
-							column.slot && typeof column.slot === 'function'
-								? column.slot
-								: slots[column.slot || column.prop]
-
-						const { prop, ...rest } = column
-
-						return (
-							<el-table-column
-								key={prop}
-								prop={prop}
-								{...rest}
-								v-slots={{
-									default: slot,
-								}}
-							/>
-						)
+						// const slot =
+						// 	column.slot && typeof column.slot === 'function'
+						// 		? column.slot
+						// 		: slots[column.slot || column.prop]
+						// const { prop, ...rest } = column
+						// return (
+						// <a-table-column
+						// 	key={prop}
+						// 	prop={prop}
+						// 	{...rest}
+						// 	v-slots={{
+						// 		default: slot,
+						// 	}}
+						// />
+						// )
 					})}
-				</el-table>
+				</a-table>
 
 				{/* 分页组件 */}
 				{props.pagination && (

@@ -74,17 +74,17 @@ export default defineComponent(
 		}
 
 		return () => (
-			<el-form
+			<a-form
 				model={query.value}
 				label-width="auto"
 				label-position="right"
 				onSubmitPrevent={handleSubmit}
 			>
-				<el-row gutter={16} justify="start">
+				<a-row gutter={16} justify="start">
 					{filterFields.value.map((config) => {
 						return (
-							<el-col span={6}>
-								<el-form-item label={config.label} prop={config.model}>
+							<a-col span={6}>
+								<a-form-item label={config.label} prop={config.model}>
 									{(() => {
 										switch (config.type) {
 											case 'input':
@@ -93,16 +93,16 @@ export default defineComponent(
 												return createElSelect(config)
 										}
 									})()}
-								</el-form-item>
-							</el-col>
+								</a-form-item>
+							</a-col>
 						)
 					})}
 
-					<el-col span={span.value}>
+					<a-col span={span.value}>
 						<div class="flex-end">
 							{/* 添加一个展开收起的图标文本 */}
 							{props.config.length > oneLineMaxComponent && (
-								<el-link
+								<a-link
 									class="mr-2 select-none"
 									underline={false}
 									type="primary"
@@ -112,20 +112,20 @@ export default defineComponent(
 										{isExpand.value ? <arrowUp /> : <arrowDown />}
 									</el-icon>
 									{isExpand.value ? '收起' : '展开'}
-								</el-link>
+								</a-link>
 							)}
 
-							<el-button type="primary" onClick={handleSubmit}>
+							<a-button type="primary" onClick={handleSubmit}>
 								搜索
-							</el-button>
+							</a-button>
 
-							<el-button plain onClick={handleReset}>
+							<a-button plain onClick={handleReset}>
 								重置
-							</el-button>
+							</a-button>
 						</div>
-					</el-col>
-				</el-row>
-			</el-form>
+					</a-col>
+				</a-row>
+			</a-form>
 		)
 	},
 	{

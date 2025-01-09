@@ -30,7 +30,7 @@ const handlePaginationChange = (newPagination: any) => {
 
 <template>
 	<div>
-		<PagingTable
+		<!-- <PagingTable
 			:loading="false"
 			:tableData="tableData"
 			:columns="columns"
@@ -41,8 +41,8 @@ const handlePaginationChange = (newPagination: any) => {
 			<template #age="{ row }">
 				<span style="color: green">{{ row.age }}</span>
 			</template>
-		</PagingTable>
+		</PagingTable> -->
 
-		<Pagination :pagination="pagination" :total="100" @update="handlePaginationChange" />
+		<!-- <Pagination :pagination="pagination" :total="100" @update="handlePaginationChange" /> -->
 	</div>
 </template>
