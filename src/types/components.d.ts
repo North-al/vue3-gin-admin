@@ -17,6 +17,7 @@ declare module 'vue' {
     ATableColumn: typeof import('ant-design-vue/es')['TableColumn']
     AuthCard: typeof import('./../components/Auth/AuthCard.vue')['default']
     Iconify: typeof import('@iconify/vue')['Icon']
+    Loading: typeof import('./../components/Loading/index.tsx')['default']
     Pagination: typeof import('./../components/Pagination/index.tsx')['default']
     PagingTable: typeof import('./../components/PagingTable/index.tsx')['default']
     RippleBackground: typeof import('./../components/Auth/RippleBackground.vue')['default']
