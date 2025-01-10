@@ -38,33 +38,41 @@ export default defineComponent(
 
 		const createElInput = (config: ISearchConfig) => {
 			return (
-				<el-input
-					v-model={query.value[config.model]}
+				<a-input
+					v-model={[query.value[config.model], 'value']}
 					placeholder={config.placeholder || '请输入' + config.label}
 					clearable
-					suffix-icon="Search"
 					{...config.props}
-				/>
+				>
+					{{
+						prefix: () =>
+							config.slot?.prefix?.() || (
+								<iconify class="text-base text-gray-400" icon="ep:search"></iconify>
+							),
+						suffix: () => config.slot?.suffix?.(),
+					}}
+				</a-input>
 			)
 		}
 
 		const createElSelect = (config: ISearchConfig) => {
 			return (
-				<el-select
-					v-model={query.value[config.model]}
+				<a-select
+					v-model={[query.value[config.model], 'value']}
 					placeholder={config.placeholder || '请选择' + config.label}
 					clearable
 					{...config.props}
 				>
 					{config.options?.map((option) => (
-						<el-option key={option.value} label={option.label} value={option.value} />
+						<a-select-option key={option.value} value={option.value}>
+							{option.label}
+						</a-select-option>
 					))}
-				</el-select>
+				</a-select>
 			)
 		}
 
 		const handleSubmit = () => {
-			console.log(query.value)
 			emit('submit', query.value)
 		}
 
@@ -74,17 +82,12 @@ export default defineComponent(
 		}
 
 		return () => (
-			<a-form
-				model={query.value}
-				label-width="auto"
-				label-position="right"
-				onSubmitPrevent={handleSubmit}
-			>
+			<a-form model={query.value} onSubmitPrevent={handleSubmit}>
 				<a-row gutter={16} justify="start">
 					{filterFields.value.map((config) => {
 						return (
 							<a-col span={6}>
-								<a-form-item label={config.label} prop={config.model}>
+								<a-form-item label={config.label} name={config.model}>
 									{(() => {
 										switch (config.type) {
 											case 'input':
@@ -100,28 +103,29 @@ export default defineComponent(
 
 					<a-col span={span.value}>
 						<div class="flex-end">
-							{/* 添加一个展开收起的图标文本 */}
 							{props.config.length > oneLineMaxComponent && (
-								<a-link
-									class="mr-2 select-none"
-									underline={false}
-									type="primary"
+								<a-button
+									type="link"
 									onClick={() => (isExpand.value = !isExpand.value)}
 								>
-									<el-icon>
-										{isExpand.value ? <arrowUp /> : <arrowDown />}
-									</el-icon>
-									{isExpand.value ? '收起' : '展开'}
-								</a-link>
+									<div class="flex items-center">
+										<iconify
+											icon={
+												isExpand.value
+													? 'ant-design:caret-up-outlined'
+													: 'ant-design:caret-down-outlined'
+											}
+										></iconify>
+										<span class="ml-1">{isExpand.value ? '收起' : '展开'}</span>
+									</div>
+								</a-button>
 							)}
 
-							<a-button type="primary" onClick={handleSubmit}>
+							<a-button class="mr-2" type="primary" onClick={handleSubmit}>
 								搜索
 							</a-button>
 
-							<a-button plain onClick={handleReset}>
-								重置
-							</a-button>
+							<a-button onClick={handleReset}>重置</a-button>
 						</div>
 					</a-col>
 				</a-row>

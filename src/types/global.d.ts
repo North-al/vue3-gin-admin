@@ -22,6 +22,10 @@ declare global {
 		placeholder?: string
 		options?: { label: string; value: string }[]
 		props?: Record<string, any>
+		slot?: {
+			suffix?: () => JSX.Element
+			prefix?: () => JSX.Element
+		}
 	}
 }
 
