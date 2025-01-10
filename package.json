@@ -18,7 +18,6 @@
     "@unocss/reset": "^0.65.3",
     "ant-design-vue": "4.x",
     "axios": "^1.7.9",
-    "element-plus": "^2.9.1",
     "pinia": "^2.3.0",
     "tailwind-variants": "^0.3.0",
     "unocss": "^0.65.3",
