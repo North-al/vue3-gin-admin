@@ -19,98 +19,109 @@ const searchConfig: ISearchConfig[] = [
 	},
 ]
 
-const columns = [
-	{
-		title: '菜单标题(title)',
-		dataIndex: 'title',
-		key: 'title',
-		width: 130,
-		fixed: 'left',
-	},
-	{
-		title: '菜单路径',
-		dataIndex: 'route_path',
-		key: 'route_path',
-		width: 100,
-	},
-	{
-		title: '菜单名称(name)',
-		dataIndex: 'route_name',
-		key: 'route_name',
-		width: 140,
-	},
-	{
-		title: '重定向',
-		dataIndex: 'redirect',
-		key: 'redirect',
-		width: 100,
-	},
-	{
-		title: '页面文件路径',
-		dataIndex: 'page_file_path',
-		key: 'page_file_path',
-		width: 150,
-	},
-	{
-		title: '图标',
-		dataIndex: 'icon',
-		key: 'icon',
-		width: 100,
-	},
-	{
-		title: '是否隐藏',
-		dataIndex: 'hidden',
-		key: 'hidden',
-		width: 120,
-	},
-	{
-		title: '是否缓存',
-		dataIndex: 'keep_alive',
-		key: 'keep_alive',
-		customRender: ({ record }: { record: IMenuItem }) => (
-			<a-tag type={record.keep_alive ? 'success' : 'danger'}>
-				{record.keep_alive ? '是' : '否'}
-			</a-tag>
-		),
-		width: 100,
-	},
-	{
-		title: '排序',
-		dataIndex: 'sort',
-		key: 'sort',
-		width: 100,
-	},
-	{
-		title: '创建时间',
-		dataIndex: 'created_at',
-		key: 'created_at',
-		width: 150,
-	},
-	{
-		title: '操作',
-		key: 'action',
-		width: 140,
-		fixed: 'right',
-		customRender: ({ record }: { record: IMenuItem }) => (
-			<a-space>
-				<a-button type="link" size="small">
-					新增
-				</a-button>
-				<a-button type="link" size="small">
-					编辑
-				</a-button>
-				<a-button type="link" size="small" danger>
-					删除
-				</a-button>
-			</a-space>
-		),
-	},
-]
-
 export default defineComponent(() => {
+	const columns = [
+		{
+			title: '菜单标题(title)',
+			dataIndex: 'title',
+			key: 'title',
+			width: 130,
+			fixed: 'left',
+		},
+		{
+			title: '菜单路径',
+			dataIndex: 'route_path',
+			key: 'route_path',
+			width: 100,
+		},
+		{
+			title: '菜单名称(name)',
+			dataIndex: 'route_name',
+			key: 'route_name',
+			width: 140,
+		},
+		{
+			title: '重定向',
+			dataIndex: 'redirect',
+			key: 'redirect',
+			width: 100,
+		},
+		{
+			title: '页面文件路径',
+			dataIndex: 'page_file_path',
+			key: 'page_file_path',
+			width: 150,
+		},
+		{
+			title: '图标',
+			dataIndex: 'icon',
+			key: 'icon',
+			width: 100,
+		},
+		{
+			title: '是否隐藏',
+			dataIndex: 'hidden',
+			key: 'hidden',
+			width: 120,
+		},
+		{
+			title: '是否缓存',
+			dataIndex: 'keep_alive',
+			key: 'keep_alive',
+			customRender: ({ record }: { record: IMenuItem }) => (
+				<a-tag type={record.keep_alive ? 'success' : 'danger'}>
+					{record.keep_alive ? '是' : '否'}
+				</a-tag>
+			),
+			width: 100,
+		},
+		{
+			title: '排序',
+			dataIndex: 'sort',
+			key: 'sort',
+			width: 100,
+		},
+		{
+			title: '创建时间',
+			dataIndex: 'created_at',
+			key: 'created_at',
+			width: 150,
+		},
+		{
+			title: '操作',
+			key: 'action',
+			width: 140,
+			fixed: 'right',
+			customRender: ({ record }: { record: IMenuItem }) => (
+				<a-space>
+					<a-button type="link" size="small" onClick={() => handleAdd(record)}>
+						新增
+					</a-button>
+					<a-button type="link" size="small">
+						编辑
+					</a-button>
+					<a-button type="link" size="small" danger>
+						删除
+					</a-button>
+				</a-space>
+			),
+		},
+	]
 	const { list } = useTable<IMenuItem>(fetchMenuList, {}, false)
 	const handleSubmit = (query: Record<string, any>) => {
 		console.log(query)
+	}
+
+	const handleAdd = (record: IMenuItem) => {
+		console.log(record)
+		Modal.info({
+			title: '信息',
+			maskClosable: true,
+			content: () => <a-input v-model={[record.title, 'value']}></a-input>,
+			onOk: () => {
+				console.log(record.title)
+			},
+		})
 	}
 
 	return () => (

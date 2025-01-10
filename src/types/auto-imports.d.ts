@@ -8,6 +8,7 @@ export {}
 declare global {
   const AMessage: typeof import('ant-design-vue')['message']
   const EffectScope: typeof import('vue')['EffectScope']
+  const Modal: typeof import('ant-design-vue')['Modal']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
@@ -73,6 +74,7 @@ declare global {
   const useCssVars: typeof import('vue')['useCssVars']
   const useId: typeof import('vue')['useId']
   const useLink: typeof import('vue-router')['useLink']
+  const useModal: typeof import('../hooks/useModal')['useModal']
   const useModel: typeof import('vue')['useModel']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
@@ -99,6 +101,7 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly AMessage: UnwrapRef<typeof import('ant-design-vue')['message']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly Modal: UnwrapRef<typeof import('ant-design-vue')['Modal']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
@@ -164,6 +167,7 @@ declare module 'vue' {
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
+    readonly useModal: UnwrapRef<typeof import('../hooks/useModal')['useModal']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>

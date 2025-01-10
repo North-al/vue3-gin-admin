@@ -1,5 +1,6 @@
 import { KeepAlive, Suspense, Transition } from 'vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
+// import { StyleContextProps} from 'ant-design-vue'
 
 export default defineComponent(() => {
 	const theme = {
@@ -21,7 +22,9 @@ export default defineComponent(() => {
 										default: () => (
 											<div>
 												<a-config-provider theme={theme} locale={zhCN}>
-													<comp />
+													<a-app>
+														<comp />
+													</a-app>
 												</a-config-provider>
 											</div>
 										),

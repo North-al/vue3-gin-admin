@@ -24,7 +24,10 @@ export default defineConfig({
 				'vue-router',
 				'pinia',
 				{
-					'ant-design-vue': [['message', 'AMessage']],
+					'ant-design-vue': [
+						['message', 'AMessage'],
+						['Modal', 'Modal'],
+					],
 				},
 			],
 			dts: 'src/types/auto-imports.d.ts',

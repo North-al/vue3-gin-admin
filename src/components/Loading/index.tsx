@@ -2,7 +2,7 @@ import styles from './loading.module.scss'
 
 export default defineComponent(() => {
 	return () => (
-		<div class={styles.container}>
+		<div class={[styles.container, 'bg-dark']}>
 			<div class={styles.spinner}>
 				<div></div>
 				<div></div>
