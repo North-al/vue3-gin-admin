@@ -7,7 +7,7 @@ const activeMenu = ref('1')
 <template>
 	<div class="sidebar">
 		<Logo :collapse="false" />
-		<a-menu :default-active="activeMenu" class="el-menu-vertical" :collapse="false">
+		<a-menu :default-active="activeMenu" :collapse="false">
 			<!-- 菜单项 -->
 		</a-menu>
 	</div>

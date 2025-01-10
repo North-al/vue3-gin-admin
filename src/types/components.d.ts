@@ -15,6 +15,7 @@ declare module 'vue' {
     AMenu: typeof import('ant-design-vue/es')['Menu']
     ATable: typeof import('ant-design-vue/es')['Table']
     ATableColumn: typeof import('ant-design-vue/es')['TableColumn']
+    ATag: typeof import('ant-design-vue/es')['Tag']
     AuthCard: typeof import('./../components/Auth/AuthCard.vue')['default']
     Iconify: typeof import('@iconify/vue')['Icon']
     Loading: typeof import('./../components/Loading/index.tsx')['default']
