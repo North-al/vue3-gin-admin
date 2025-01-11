@@ -1,5 +1,5 @@
 import { fetchMenuList } from '@/api/services'
-
+import MenuDialog from './components/menu-dialog'
 const searchConfig: ISearchConfig[] = [
 	{ type: 'input', label: '菜单标题', model: 'title' },
 	{ type: 'input', label: '路径', model: 'route_path', placeholder: '请输入路径' },
@@ -113,11 +113,11 @@ export default defineComponent(() => {
 	}
 
 	const handleAdd = (record: IMenuItem) => {
-		console.log(record)
-		Modal.info({
-			title: '信息',
+		Modal.confirm({
+			title: '新增菜单',
 			maskClosable: true,
-			content: () => <a-input v-model={[record.title, 'value']}></a-input>,
+			width: 820,
+			content: () => <MenuDialog record={record} />,
 			onOk: () => {
 				console.log(record.title)
 			},
