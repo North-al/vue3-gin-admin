@@ -1,4 +1,4 @@
-import { fetchMenuList } from '@/api/services'
+import { fetchMenuList, fetchCreateMenu } from '@/api/services'
 import MenuDialog from './components/menu-dialog'
 const searchConfig: ISearchConfig[] = [
 	{ type: 'input', label: '菜单标题', model: 'title' },
@@ -24,50 +24,45 @@ export default defineComponent(() => {
 		{
 			title: '菜单标题(title)',
 			dataIndex: 'title',
-			key: 'title',
-			width: 130,
-			fixed: 'left',
+			width: 200,
+		},
+		{
+			title: 'ID',
+			dataIndex: 'id',
 		},
 		{
 			title: '菜单路径',
 			dataIndex: 'route_path',
-			key: 'route_path',
 			width: 100,
 		},
 		{
 			title: '菜单名称(name)',
 			dataIndex: 'route_name',
-			key: 'route_name',
 			width: 140,
 		},
 		{
 			title: '重定向',
 			dataIndex: 'redirect',
-			key: 'redirect',
 			width: 100,
 		},
 		{
 			title: '页面文件路径',
 			dataIndex: 'page_file_path',
-			key: 'page_file_path',
 			width: 150,
 		},
 		{
 			title: '图标',
 			dataIndex: 'icon',
-			key: 'icon',
 			width: 100,
 		},
 		{
 			title: '是否隐藏',
 			dataIndex: 'hidden',
-			key: 'hidden',
 			width: 120,
 		},
 		{
 			title: '是否缓存',
 			dataIndex: 'keep_alive',
-			key: 'keep_alive',
 			customRender: ({ record }: { record: IMenuItem }) => (
 				<a-tag type={record.keep_alive ? 'success' : 'danger'}>
 					{record.keep_alive ? '是' : '否'}
@@ -78,13 +73,11 @@ export default defineComponent(() => {
 		{
 			title: '排序',
 			dataIndex: 'sort',
-			key: 'sort',
 			width: 100,
 		},
 		{
 			title: '创建时间',
 			dataIndex: 'created_at',
-			key: 'created_at',
 			width: 150,
 		},
 		{
@@ -107,19 +100,53 @@ export default defineComponent(() => {
 			),
 		},
 	]
-	const { list } = useTable<IMenuItem>(fetchMenuList, {}, false)
+	const { list, handleRefresh } = useTable<IMenuItem>(
+		fetchMenuList,
+		{},
+		false,
+		(data: IMenuItem[]) => {
+			// 转换成tree
+
+			type Menu = IMenuItem & { children?: IMenuItem[] }
+			const buildTree = (items: Menu[], pid: number) => {
+				const result: Array<Menu> = []
+				for (const item of items) {
+					// 说明他是父节点
+					if (item.parent_id === pid) {
+						// 查询它的子节点
+						const children = buildTree(items, item.id!)
+						if (children.length) {
+							item.children = children
+						}
+						result.push(item)
+					}
+				}
+
+				return result
+			}
+
+			return buildTree(data, 0)
+		},
+	)
+
 	const handleSubmit = (query: Record<string, any>) => {
 		console.log(query)
+		console.log(list.value)
 	}
 
 	const handleAdd = (record: IMenuItem) => {
 		Modal.confirm({
 			title: '新增菜单',
 			maskClosable: true,
+			centered: true,
 			width: 820,
-			content: () => <MenuDialog record={record} />,
+			content: () => <MenuDialog record={record} parentList={list.value} />,
 			onOk: () => {
-				console.log(record.title)
+				console.log(record)
+				fetchCreateMenu({ ...record, parent_id: record.parent_id || 3 }).then(() => {
+					AMessage.success('新增成功')
+					handleRefresh()
+				})
 			},
 		})
 	}
@@ -129,8 +156,21 @@ export default defineComponent(() => {
 			<a-card class="mb-1">
 				<searchForm config={searchConfig} onSubmit={handleSubmit} onReset={() => {}} />
 			</a-card>
-			<a-card>
-				<a-table dataSource={list.value} columns={columns} />
+			<a-card title="菜单列表">
+				{{
+					extra: () => (
+						<a-button type="primary" onClick={() => handleAdd({} as IMenuItem)}>
+							新增根菜单
+						</a-button>
+					),
+					default: () => (
+						<a-table
+							class="components-table-demo-nested"
+							dataSource={list.value}
+							columns={columns}
+						/>
+					),
+				}}
 			</a-card>
 		</>
 	)
