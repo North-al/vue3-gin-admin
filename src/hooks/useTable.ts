@@ -21,8 +21,11 @@ export const useTable = <T>(
 			})
 			console.log(data)
 			list.value = isPagination ? data.list : data
+
 			total.value = isPagination ? data.total : 0
-			callback && callback(data)
+			if (callback) {
+				list.value = callback(isPagination ? data.list : data)
+			}
 		} catch (error) {
 			console.error(error)
 		} finally {
@@ -31,6 +34,11 @@ export const useTable = <T>(
 	}
 
 	getTableList()
+
+	const handleRefresh = () => {
+		pagination.value.page = 1
+		getTableList()
+	}
 
 	const handleSearch = () => {
 		pagination.value.page = 1
@@ -49,5 +57,6 @@ export const useTable = <T>(
 		getTableList,
 		handleSearch,
 		handleReset,
+		handleRefresh,
 	}
 }
