@@ -51,7 +51,7 @@ const AppSidebar = defineAsyncComponent(() => import('./components/AppSidebar.vu
 	.main-content {
 		flex: 1;
 		padding: 8px;
-		// overflow: auto;
+		overflow: auto;
 		// background: #eceef1;
 	}
 }
