@@ -6,59 +6,80 @@ export default defineComponent(
 				emit('update:record', value)
 			},
 		})
+
+		const typeOptions = ['目录', '菜单', '按钮']
+		const type = ref(typeOptions[0])
+
 		const rules = {
 			title: [{ required: true, message: '请输入菜单名称' }],
 		}
 
 		return () => (
 			<>
-				<a-form
-					model={model}
-					rules={rules}
-					label-col={{ xs: { span: 24 }, sm: { span: 4 } }}
-					wrapper-col={{ xs: { span: 24 }, sm: { span: 24 } }}
-					autoFocusFirstInput
-				>
-					{/* <a-form-item label="父级菜单" name="parent_id">
-						<a-select
+				<a-form model={model} rules={rules} autoFocusFirstInput labelAlign="right">
+					<a-form-item label="菜单类型" name="type">
+						<a-segmented block v-model={[type.value, 'value']} options={typeOptions} />
+					</a-form-item>
+
+					<a-form-item label="父节点" name="parent_id">
+						<a-tree-select
 							v-model={[model.value.parent_id, 'value']}
-							placeholder="请选择父级菜单"
-							options={list.value.map((item) => ({
-								label: item.title,
-								value: item.id,
-							}))}
-						/>
-					</a-form-item> */}
-					<a-form-item label="菜单标题" name="title" required>
-						<a-input
-							v-model={[model.value.title, 'value']}
-							placeholder="请输入菜单标题"
-							prefix={<iconify icon="ant-design:menu-outlined" />}
-						/>
-					</a-form-item>
-					<a-form-item label="路由名称" name="route_name">
-						<a-input
-							v-model={[model.value.route_name, 'value']}
-							placeholder="请输入路由名称"
-							prefix={<iconify icon="ant-design:link-outlined" />}
-						/>
+							show-search
+							style="width: 100%"
+							dropdown-style={{ maxHeight: '400px', overflow: 'auto' }}
+							placeholder="请选择父节点"
+							allow-clear
+							tree-data={props.parentList}
+							tree-node-filter-prop="label"
+							field-names={{
+								children: 'children',
+								label: 'title',
+								value: 'id',
+							}}
+						></a-tree-select>
 					</a-form-item>
 
-					<a-form-item label="菜单路径" name="route_path">
-						<a-input
-							v-model={[model.value.route_path, 'value']}
-							placeholder="请输入菜单路径"
-							prefix={<iconify icon="ant-design:folder-outlined" />}
-						/>
-					</a-form-item>
+					<a-row gutter={16}>
+						<a-col span={12}>
+							<a-form-item label="菜单标题" name="title" required>
+								<a-input
+									v-model={[model.value.title, 'value']}
+									placeholder="请输入菜单标题"
+									prefix={<iconify icon="ant-design:menu-outlined" />}
+								/>
+							</a-form-item>
+						</a-col>
+						<a-col span={12}>
+							<a-form-item label="路由名称" name="route_name">
+								<a-input
+									v-model={[model.value.route_name, 'value']}
+									placeholder="请输入路由名称"
+									prefix={<iconify icon="ant-design:link-outlined" />}
+								/>
+							</a-form-item>
+						</a-col>
+					</a-row>
 
-					<a-form-item label="页面路径" name="page_file_path">
-						<a-input
-							v-model={[model.value.page_file_path, 'value']}
-							placeholder="请输入页面路径"
-							prefix={<iconify icon="ant-design:file-outlined" />}
-						/>
-					</a-form-item>
+					<a-row gutter={16}>
+						<a-col span={12}>
+							<a-form-item label="菜单路径" name="route_path">
+								<a-input
+									v-model={[model.value.route_path, 'value']}
+									placeholder="请输入菜单路径"
+									prefix={<iconify icon="ant-design:folder-outlined" />}
+								/>
+							</a-form-item>
+						</a-col>
+						<a-col span={12}>
+							<a-form-item label="页面路径" name="page_file_path">
+								<a-input
+									v-model={[model.value.page_file_path, 'value']}
+									placeholder="请输入页面路径"
+									prefix={<iconify icon="ant-design:file-outlined" />}
+								/>
+							</a-form-item>
+						</a-col>
+					</a-row>
 
 					<a-form-item label="重定向" name="redirect">
 						<a-input
@@ -85,21 +106,26 @@ export default defineComponent(
 						</a-input>
 					</a-form-item>
 
-					<a-form-item label="是否隐藏" name="hidden">
-						<a-switch
-							v-model={[model.value.hidden, 'checked']}
-							checked-children="是"
-							un-checked-children="否"
-						/>
-					</a-form-item>
-
-					<a-form-item label="是否缓存" name="keep_alive">
-						<a-switch
-							v-model={[model.value.keep_alive, 'checked']}
-							checked-children="是"
-							un-checked-children="否"
-						/>
-					</a-form-item>
+					<a-row gutter={16}>
+						<a-col span={12}>
+							<a-form-item label="是否隐藏" name="hidden">
+								<a-switch
+									v-model={[model.value.hidden, 'checked']}
+									checked-children="是"
+									un-checked-children="否"
+								/>
+							</a-form-item>
+						</a-col>
+						<a-col span={12}>
+							<a-form-item label="是否缓存" name="keep_alive">
+								<a-switch
+									v-model={[model.value.keep_alive, 'checked']}
+									checked-children="是"
+									un-checked-children="否"
+								/>
+							</a-form-item>
+						</a-col>
+					</a-row>
 
 					<a-form-item label="排序" name="sort">
 						<a-input-number

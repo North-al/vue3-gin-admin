@@ -1,6 +1,5 @@
 import { KeepAlive, Suspense, Transition } from 'vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-// import { StyleContextProps} from 'ant-design-vue'
 
 export default defineComponent(() => {
 	const theme = {

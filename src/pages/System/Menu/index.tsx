@@ -105,8 +105,6 @@ export default defineComponent(() => {
 		{},
 		false,
 		(data: IMenuItem[]) => {
-			// 转换成tree
-
 			type Menu = IMenuItem & { children?: IMenuItem[] }
 			const buildTree = (items: Menu[], pid: number) => {
 				const result: Array<Menu> = []
