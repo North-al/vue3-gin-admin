@@ -133,22 +133,38 @@ export default defineComponent(() => {
 	}
 
 	const handleAdd = (record: IMenuItem) => {
-		if (!record.parent_id) {
+		if (record.parent_id === undefined) {
 			record.parent_id = 0
+			record.sort = list.value.length + 1
+		} else {
+			const parent =
+				record.parent_id === 0
+					? record
+					: list.value.find((item) => item.id === record.parent_id)
+
+			record.sort = (parent?.sort || 0) + 1
+		}
+
+		const initializedRecord = {
+			...record,
+			parent_id: record.parent_id ?? 0,
+			hidden: record.hidden ?? false,
+			keep_alive: record.keep_alive ?? false,
 		}
 
 		Modal.confirm({
 			title: '新增菜单',
 			maskClosable: true,
 			centered: true,
+			closable: true,
 			width: 820,
-			content: () => <MenuDialog record={record} parentList={list.value} />,
+			content: () => <MenuDialog record={initializedRecord} parentList={list.value} />,
 			onOk: () => {
-				console.log(record)
-				fetchCreateMenu(record).then(() => {
-					AMessage.success('新增成功')
-					handleRefresh()
-				})
+				console.log(initializedRecord)
+				// fetchCreateMenu(record).then(() => {
+				// 	AMessage.success('新增成功')
+				// 	handleRefresh()
+				// })
 			},
 		})
 	}
