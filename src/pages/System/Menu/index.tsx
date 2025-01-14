@@ -133,6 +133,10 @@ export default defineComponent(() => {
 	}
 
 	const handleAdd = (record: IMenuItem) => {
+		if (!record.parent_id) {
+			record.parent_id = 0
+		}
+
 		Modal.confirm({
 			title: '新增菜单',
 			maskClosable: true,
@@ -141,7 +145,7 @@ export default defineComponent(() => {
 			content: () => <MenuDialog record={record} parentList={list.value} />,
 			onOk: () => {
 				console.log(record)
-				fetchCreateMenu({ ...record, parent_id: record.parent_id || 3 }).then(() => {
+				fetchCreateMenu(record).then(() => {
 					AMessage.success('新增成功')
 					handleRefresh()
 				})

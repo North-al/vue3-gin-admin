@@ -7,12 +7,25 @@ export default defineComponent(
 			},
 		})
 
+		const tree = [{ id: 0, title: '顶级菜单' }, ...props.parentList]
+
 		const typeOptions = ['目录', '菜单', '按钮']
 		const type = ref(typeOptions[0])
 
 		const rules = {
-			title: [{ required: true, message: '请输入菜单名称' }],
+			title: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+			parent_id: [{ required: true, message: '请选择父节点', trigger: 'blur' }],
+			route_path: [{ required: true, message: '请输入路由路径', trigger: 'blur' }],
+			page_file_path: [{ required: true, message: '请输入页面路径', trigger: 'blur' }],
 		}
+
+		// 通过import.meta.glob来获取所有页面【tsx,vue】
+		const pages = import.meta.glob('@/pages/**/*.{tsx,vue}', { eager: true })
+		const pageList = Object.keys(pages).map((key) => {
+			return key.replace('/src', '@')
+		})
+
+		console.log(pageList)
 
 		return () => (
 			<>
@@ -24,12 +37,13 @@ export default defineComponent(
 					<a-form-item label="父节点" name="parent_id">
 						<a-tree-select
 							v-model={[model.value.parent_id, 'value']}
+							disabled={model.value.parent_id === 0}
 							show-search
 							style="width: 100%"
 							dropdown-style={{ maxHeight: '400px', overflow: 'auto' }}
 							placeholder="请选择父节点"
 							allow-clear
-							tree-data={props.parentList}
+							tree-data={tree}
 							tree-node-filter-prop="label"
 							field-names={{
 								children: 'children',
@@ -50,18 +64,6 @@ export default defineComponent(
 							</a-form-item>
 						</a-col>
 						<a-col span={12}>
-							<a-form-item label="路由名称" name="route_name">
-								<a-input
-									v-model={[model.value.route_name, 'value']}
-									placeholder="请输入路由名称"
-									prefix={<iconify icon="ant-design:link-outlined" />}
-								/>
-							</a-form-item>
-						</a-col>
-					</a-row>
-
-					<a-row gutter={16}>
-						<a-col span={12}>
 							<a-form-item label="菜单路径" name="route_path">
 								<a-input
 									v-model={[model.value.route_path, 'value']}
@@ -70,13 +72,28 @@ export default defineComponent(
 								/>
 							</a-form-item>
 						</a-col>
+					</a-row>
+
+					<a-row gutter={16}>
+						<a-col span={12}>
+							<a-form-item label="路由名称" name="route_name">
+								<a-input
+									v-model={[model.value.route_name, 'value']}
+									placeholder="请输入路由名称"
+									prefix={<iconify icon="ant-design:link-outlined" />}
+								/>
+							</a-form-item>
+						</a-col>
 						<a-col span={12}>
 							<a-form-item label="页面路径" name="page_file_path">
-								<a-input
+								<a-select
 									v-model={[model.value.page_file_path, 'value']}
-									placeholder="请输入页面路径"
-									prefix={<iconify icon="ant-design:file-outlined" />}
-								/>
+									placeholder="请选择页面路径"
+								>
+									{pageList.map((item) => (
+										<a-select-option value={item}>{item}</a-select-option>
+									))}
+								</a-select>
 							</a-form-item>
 						</a-col>
 					</a-row>
