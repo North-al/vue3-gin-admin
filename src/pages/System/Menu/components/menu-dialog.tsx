@@ -47,6 +47,7 @@ export default defineComponent({
 					autoFocusFirstInput
 					labelAlign="right"
 					ref="formRef"
+					label-col={{ style: { width: '80px' } }}
 				>
 					<a-form-item label="菜单类型" name="type">
 						<a-segmented block v-model={[type.value, 'value']} options={typeOptions} />
